@@ -41,7 +41,7 @@ dependencies {
     compile rootProject.ext.dependencies["retrofit-adapter-rxjava"]
     compile rootProject.ext.dependencies["retrofit-converter-scalars"]
     compile rootProject.ext.dependencies["glide"]
-    compile rootProject.ext.dependencies["glide-okhttp3-integration"]
+    compile rootProject.ext.dependencies["glide-loader-okhttp3"]
 
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.squareup.picasso:picasso:2.5.2'

@@ -1,29 +1,20 @@
 package com.cauc.mavenj.utils;
 
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.cauc.mavenj.R;
 import com.cauc.mavenj.app.Constant;
 import com.cauc.mavenj.callback.JsonCallback;
 import com.cauc.mavenj.dialog.ForceUpdateDialog;
-import com.cauc.mavenj.listener.PermissionListener;
 import com.cauc.mavenj.model.CheckUpdateInfo;
 import com.cauc.mavenj.model.LzyResponse;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
