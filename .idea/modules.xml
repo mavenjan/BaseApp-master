@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/BaseApp-master.iml" filepath="$PROJECT_DIR$/BaseApp-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/magicasakura/magicasakura.iml" filepath="$PROJECT_DIR$/magicasakura/magicasakura.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mjlibrary/mjlibrary.iml" filepath="$PROJECT_DIR$/mjlibrary/mjlibrary.iml" />
+    </modules>
+  </component>
+</project>
