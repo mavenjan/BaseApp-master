@@ -27,16 +27,43 @@ package com.cauc.mavenj.materialintro.slide;
 import android.support.annotation.ColorRes;
 import android.support.v4.app.Fragment;
 
+/**
+ * @author Maven Jan
+ * @time
+ * @describe 描述
+ */
+
 public interface Slide {
+
+    /**
+     * getFragment
+     * @return
+     */
     Fragment getFragment();
 
+    /**
+     * getBackground
+     * @return
+     */
     @ColorRes
     int getBackground();
 
+    /**
+     * getBackgroundDark
+     * @return
+     */
     @ColorRes
     int getBackgroundDark();
 
+    /**
+     * canGoForward
+     * @return
+     */
     boolean canGoForward();
 
+    /**
+     * canGoBackward
+     * @return
+     */
     boolean canGoBackward();
 }

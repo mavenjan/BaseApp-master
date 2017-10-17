@@ -22,6 +22,12 @@ import com.google.gson.internal.bind.DateTypeAdapter;
 
 import java.util.Date;
 
+/**
+ * @author Maven Jan
+ * @time
+ * @describe 描述
+ */
+
 public class JsonConvertor {
 
     private static Gson gson = null;

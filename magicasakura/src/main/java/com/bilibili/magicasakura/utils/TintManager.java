@@ -39,6 +39,8 @@ import java.lang.ref.WeakReference;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import static android.os.Build.VERSION_CODES.M;
+
 /**
  * @author xyczero617@gmail.com
  * @time 15/9/15
@@ -61,7 +63,9 @@ public class TintManager {
     private SparseArray<String> mSkipDrawableIdTags;
 
     public static com.bilibili.magicasakura.utils.TintManager get(Context context) {
-        if (context == null) return null;
+        if (context == null) {
+            return null;
+        }
 
         if (context instanceof ContextThemeWrapper) {
             context = ((ContextThemeWrapper) context).getBaseContext();
@@ -85,8 +89,9 @@ public class TintManager {
     public static void clearTintCache() {
         for (Map.Entry<Context, com.bilibili.magicasakura.utils.TintManager> entry : INSTANCE_CACHE.entrySet()) {
             com.bilibili.magicasakura.utils.TintManager tm = entry.getValue();
-            if (tm != null)
+            if (tm != null) {
                 tm.clear();
+            }
         }
         COLOR_FILTER_CACHE.evictAll();
     }
@@ -105,10 +110,14 @@ public class TintManager {
 
     @Nullable
     public ColorStateList getColorStateList(@ColorRes int resId) {
-        if (resId == 0) return null;
+        if (resId == 0) {
+            return null;
+        }
 
         final Context context = mContextRef.get();
-        if (context == null) return null;
+        if (context == null) {
+            return null;
+        }
 
         ColorStateList colorStateList = mCacheTintList != null ? mCacheTintList.get(resId) : null;
         if (colorStateList == null) {
@@ -126,9 +135,13 @@ public class TintManager {
     @Nullable
     public Drawable getDrawable(@DrawableRes int resId) {
         final Context context = mContextRef.get();
-        if (context == null) return null;
+        if (context == null) {
+            return null;
+        }
 
-        if (resId == 0) return null;
+        if (resId == 0) {
+            return null;
+        }
         if (mSkipDrawableIdTags != null) {
             final String cachedTagName = mSkipDrawableIdTags.get(resId);
             if (SKIP_DRAWABLE_TAG.equals(cachedTagName)) {
@@ -160,7 +173,9 @@ public class TintManager {
 
     private Drawable getCacheDrawable(@NonNull final Context context, final int key) {
         synchronized (mDrawableCacheLock) {
-            if (mCacheDrawables == null) return null;
+            if (mCacheDrawables == null) {
+                return null;
+            }
 
             final WeakReference<Drawable.ConstantState> weakReference = mCacheDrawables.get(key);
             if (weakReference != null) {
@@ -218,7 +233,9 @@ public class TintManager {
 
     public static void tintViewBackground(View view, com.bilibili.magicasakura.utils.TintInfo tint) {
         Drawable background;
-        if (view == null || (background = view.getBackground()) == null) return;
+        if (view == null || (background = view.getBackground()) == null) {
+            return;
+        }
 
         if (tint.mHasTintList || tint.mHasTintMode) {
             background.mutate();
@@ -234,7 +251,7 @@ public class TintManager {
             background.clearColorFilter();
         }
 
-        if (Build.VERSION.SDK_INT <= 23) {
+        if (Build.VERSION.SDK_INT <= M) {
             // On Gingerbread, GradientDrawable does not invalidate itself when it's ColorFilter
             // has changed, so we need to force an invalidation
             background.invalidateSelf();
@@ -242,7 +259,9 @@ public class TintManager {
     }
 
     public static void tintViewDrawable(View view, Drawable drawable, TintInfo tint) {
-        if (view == null || drawable == null) return;
+        if (view == null || drawable == null) {
+            return;
+        }
         if (tint.mHasTintList || tint.mHasTintMode) {
             drawable.mutate();
             if (drawable instanceof ColorDrawable) {
@@ -257,7 +276,7 @@ public class TintManager {
             drawable.clearColorFilter();
         }
 
-        if (Build.VERSION.SDK_INT <= 23) {
+        if (Build.VERSION.SDK_INT <= M) {
             // On Gingerbread, GradientDrawable does not invalidate itself when it's ColorFilter
             // has changed, so we need to force an invalidation
             drawable.invalidateSelf();

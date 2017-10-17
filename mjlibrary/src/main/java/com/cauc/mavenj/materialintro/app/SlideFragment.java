@@ -27,6 +27,12 @@ package com.cauc.mavenj.materialintro.app;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
+/**
+ * @author Maven Jan
+ * @time
+ * @describe 描述
+ */
+
 public class SlideFragment extends Fragment implements IntroNavigation {
 
     public boolean canGoForward() {

@@ -27,16 +27,28 @@ package com.cauc.mavenj.materialintro.app;
 import android.support.annotation.StringRes;
 import android.view.View;
 
+/**
+ * @author Maven Jan
+ * @time
+ * @describe 描述
+ */
+
 public interface ButtonCtaFragment {
+    /**
+     * getButtonCtaClickListener
+     * @return buttonCtaClickListener
+     */
     View.OnClickListener getButtonCtaClickListener();
 
     /**
      * Note: you must either define a {@link String} or a {@link StringRes} label
+     * @return buttonCtaLabel
      */
     String getButtonCtaLabel();
 
     /**
      * Note: you must either define a {@link String} or a {@link StringRes} label
+     * @return buttonCtaLabelRes
      */
     @StringRes
     int getButtonCtaLabelRes();

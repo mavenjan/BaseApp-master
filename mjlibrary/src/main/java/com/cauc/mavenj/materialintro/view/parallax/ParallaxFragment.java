@@ -12,6 +12,12 @@ import com.cauc.mavenj.materialintro.view.parallax.util.ParallaxUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Maven Jan
+ * @time
+ * @describe 描述
+ */
+
 public class ParallaxFragment extends Fragment implements Parallaxable {
 
     private final List<Parallaxable> parallaxableChildren = new ArrayList<>();

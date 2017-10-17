@@ -1,10 +1,10 @@
-/**
+/*
  * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,8 +26,15 @@ import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 
+import static android.content.Context.ACTIVITY_SERVICE;
+
+/**
+ * @author Maven Jan
+ */
 
 public class CommonUtils {
+    private static Pattern MOBILE_PATTERN = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0-3,5-9])|(17[6,7]))\\d{8}$");
+    private static Pattern NUMBER_PATTERN = Pattern.compile("[0-9]*");
 
     /**
      * 检测Sdcard是否存在
@@ -45,14 +52,16 @@ public class CommonUtils {
 
 
     public static String getTopActivity(Context context) {
-        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager manager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
         List<RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(1);
 
-        if (runningTaskInfos != null)
+        if (runningTaskInfos != null) {
             return runningTaskInfos.get(0).topActivity.getClassName();
-        else
+        } else {
             return "";
+        }
     }
+
 
     /**
      * 判断是否是手机号
@@ -61,8 +70,9 @@ public class CommonUtils {
      * @return true，是手机号；false，不是手机号
      */
     public static boolean isMobileNO(String mobiles) {
-        return Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0-3,5-9])|(17[6,7]))\\d{8}$").matcher(mobiles).matches();
+        return MOBILE_PATTERN.matcher(mobiles).matches();
     }
+
 
     /**
      * 判断是否是数字
@@ -71,7 +81,7 @@ public class CommonUtils {
      * @return true, 是数字；false，不是数字
      */
     public static boolean isNumeric(String str) {
-        return Pattern.compile("[0-9]*").matcher(str).matches();
+        return NUMBER_PATTERN.matcher(str).matches();
     }
 
 
@@ -83,7 +93,7 @@ public class CommonUtils {
      */
     public static String ecodeByMD5(String originstr) {
         String result = null;
-        char hexDigits[] = {//用来将字节转换成 16 进制表示的字符
+        char[] hexDigits = {//用来将字节转换成 16 进制表示的字符
                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
         if (originstr != null) {
             try {
@@ -97,7 +107,8 @@ public class CommonUtils {
                 byte[] tmp = md.digest();
                 //用16进制数表示需要32位
                 char[] str = new char[32];
-                for (int i = 0, j = 0; i < 16; i++) {
+                int length = 16;
+                for (int i = 0, j = 0; i < length; i++) {
                     //j表示转换结果中对应的字符位置
                     //从第一个字节开始，对 MD5 的每一个字节
                     //转换成 16 进制字符
@@ -109,7 +120,8 @@ public class CommonUtils {
                     // 取字节中低 4 位的数字转换
                     str[j++] = hexDigits[b & 0xf];
                 }
-                result = new String(str);//结果转换成字符串用于返回
+                //结果转换成字符串用于返回
+                result = new String(str);
             } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -127,17 +139,22 @@ public class CommonUtils {
         String n = "";
         int getNum;
         do {
-            getNum = Math.abs(rd.nextInt()) % 10 + 48;//产生数字0-9的随机数
+            //产生数字0-9的随机数
+            getNum = Math.abs(rd.nextInt()) % 10 + 48;
             //getNum = Math.abs(rd.nextInt())%26 + 97;//产生字母a-z的随机数
             char num1 = (char) getNum;
             String dn = Character.toString(num1);
             n += dn;
         } while (n.length() < 6);
-      //  LogUtils.d("随机的6位密码是：" + n);
         return n;
     }
 
-    //联网状态，是否是wifi链接
+    /**
+     * 联网状态，是否是wifi链接
+     *
+     * @param context Context
+     * @return true false
+     */
     public static boolean isWiFi(Context context) {
 
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

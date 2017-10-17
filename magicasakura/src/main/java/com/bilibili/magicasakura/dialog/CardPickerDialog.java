@@ -141,6 +141,10 @@ public class CardPickerDialog extends DialogFragment implements View.OnClickList
     }
 
     public interface ClickListener {
+        /**
+         * onConfirm
+         * @param currentTheme
+         */
         void onConfirm(int currentTheme);
     }
 }

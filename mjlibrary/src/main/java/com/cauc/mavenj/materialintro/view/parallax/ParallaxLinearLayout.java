@@ -10,6 +10,9 @@ import android.widget.LinearLayout;
 
 import com.cauc.mavenj.R;
 
+/**
+ * @author Maven Jan
+ */
 
 public class ParallaxLinearLayout extends LinearLayout implements Parallaxable {
 
@@ -54,7 +57,9 @@ public class ParallaxLinearLayout extends LinearLayout implements Parallaxable {
         for (int i = getChildCount() - 1; i >= 0; i--) {
             View child = getChildAt(i);
             ParallaxLinearLayout.LayoutParams p = (LayoutParams) child.getLayoutParams();
-            if (p.parallaxFactor == 0) continue;
+            if (p.parallaxFactor == 0) {
+                continue;
+            }
             child.setTranslationX(getWidth() * -offset * p.parallaxFactor);
         }
     }

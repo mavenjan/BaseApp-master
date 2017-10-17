@@ -15,11 +15,11 @@ import java.io.File;
 import static android.app.PendingIntent.getActivity;
 
 /**
- * 作者 任强强 on 2016/10/18 11:36.
+ * @author 任强强 on 2016/10/18 11:36.
  */
 
 public class NotificationUtil {
-    private static final int notificationId = 0;
+    private static final int NO_TIFICATION_ID = 0;
 
     private NotificationUtil() {
     }
@@ -51,10 +51,13 @@ public class NotificationUtil {
         builder.setAutoCancel(false).setShowWhen(true).setSmallIcon(notificationIconResId).setContentTitle(notificationTitle).setContentText(notificationContent);
         PendingIntent pendingIntent = getActivity(context, 0, installIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(pendingIntent);
-        Notification notification = builder.build();// 获取一个Notification
-        notification.defaults = Notification.DEFAULT_SOUND;// 设置为默认的声音
+        // 获取一个Notification
+        Notification notification = builder.build();
+        // 设置为默认的声音
+        notification.defaults = Notification.DEFAULT_SOUND;
         notification.flags = isCanClear ? Notification.FLAG_ONLY_ALERT_ONCE : Notification.FLAG_ONLY_ALERT_ONCE | Notification.FLAG_NO_CLEAR;
-        manager.notify(notificationId, notification);// 显示通知
+        // 显示通知
+        manager.notify(NO_TIFICATION_ID, notification);
     }
 
     /**
@@ -72,10 +75,13 @@ public class NotificationUtil {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setAutoCancel(false).setShowWhen(false).setSmallIcon(notificationIconResId).setContentTitle(notificationTitle)
                 .setProgress(totalProgress, currentProgress, false);
-        Notification notification = builder.build();// 获取一个Notification
-        notification.defaults = Notification.DEFAULT_SOUND;// 设置为默认的声音
+        // 获取一个Notification
+        Notification notification = builder.build();
+        // 设置为默认的声音
+        notification.defaults = Notification.DEFAULT_SOUND;
         notification.flags = isCanClear ? Notification.FLAG_ONLY_ALERT_ONCE : Notification.FLAG_ONLY_ALERT_ONCE | Notification.FLAG_NO_CLEAR;
-        manager.notify(notificationId, notification);// 显示通知
+        // 显示通知
+        manager.notify(NO_TIFICATION_ID, notification);
     }
 
     /**
@@ -95,9 +101,12 @@ public class NotificationUtil {
                 .setContentTitle(notificationTitle).setContentText(notificationContent);
         PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(pendingIntent);
-        Notification notification = builder.build();// 获取一个Notification
-        notification.defaults = Notification.DEFAULT_SOUND;// 设置为默认的声音
+        // 获取一个Notification
+        Notification notification = builder.build();
+        // 设置为默认的声音
+        notification.defaults = Notification.DEFAULT_SOUND;
         notification.flags = isCanClear ? Notification.FLAG_ONLY_ALERT_ONCE : Notification.FLAG_ONLY_ALERT_ONCE | Notification.FLAG_NO_CLEAR;
-        manager.notify(notificationId, notification);// 显示通知
+        // 显示通知
+        manager.notify(NO_TIFICATION_ID, notification);
     }
 }

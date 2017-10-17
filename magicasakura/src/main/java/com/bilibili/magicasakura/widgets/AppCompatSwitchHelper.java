@@ -21,6 +21,7 @@ import com.bilibili.magicasakura.utils.TintManager;
  */
 
 public class AppCompatSwitchHelper {
+    private  int number2 = 2;
 
     private int[] sAttrs;
     private SwitchCompat mSwitchCompat;
@@ -61,7 +62,7 @@ public class AppCompatSwitchHelper {
                 attrs, sAttrs, defStyleAttr, 0);
         if (array.hasValue(1)) {
             mTintResId = array.getResourceId(1, 0);
-            if (array.hasValue(2)) {
+            if (array.hasValue(number2)) {
                 setSupportDrawableTintMode(mTintMode = DrawableUtils.parseTintMode(array.getInt(2, 0), null));
             }
             setSupportDrawableTint(mTintResId);
@@ -78,7 +79,9 @@ public class AppCompatSwitchHelper {
      * External use
      */
     public void setDrawable() {
-        if (skipNextApply()) return;
+        if (skipNextApply()) {
+            return;
+        }
 
         resetTintResource(0);
         setSkipNextApply(false);
@@ -136,7 +139,9 @@ public class AppCompatSwitchHelper {
      * Internal use
      */
     private void setDrawable(Drawable drawable) {
-        if (skipNextApply()) return;
+        if (skipNextApply()) {
+            return;
+        }
 
         mDrawableCallback.setDrawable(drawable);
     }
@@ -209,19 +214,45 @@ public class AppCompatSwitchHelper {
 
     public interface DrawableCallback {
 
+        /**
+         * setDrawable
+         * @param drawable Drawable
+         */
         void setDrawable(Drawable drawable);
 
+        /**
+         * getDrawable
+         * @return
+         */
         Drawable getDrawable();
     }
 
     public interface SwitchCompatExtensible {
 
+        /**
+         * setTrackTintList
+         * @param resId
+         */
         void setTrackTintList(int resId);
 
+        /**
+         * setTrackTintList
+         * @param resId
+         * @param mode
+         */
         void setTrackTintList(int resId, PorterDuff.Mode mode);
 
+        /**
+         * setThumbTintList
+         * @param resId
+         */
         void setThumbTintList(int resId);
 
+        /**
+         * setThumbTintList
+         * @param resId
+         * @param mode
+         */
         void setThumbTintList(int resId, PorterDuff.Mode mode);
     }
 }

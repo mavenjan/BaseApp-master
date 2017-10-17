@@ -21,6 +21,12 @@ import com.cauc.mavenj.widget.notification.Configuration;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.view.ViewHelper;
 
+/**
+ * @author Maven Jan
+ * @time
+ * @describe 描述
+ */
+
 public abstract class BaseEffect {
 
     public static final int DURATION;
@@ -28,17 +34,32 @@ public abstract class BaseEffect {
     static {
         DURATION = Configuration.ANIM_DURATION;
     }
-    public long mDuration=DURATION ;
+
+    public long mDuration = DURATION;
 
     private AnimatorSet mAnimatorSet;
+
     {
         mAnimatorSet = new AnimatorSet();
     }
 
+    /**
+     * setInAnimation
+     * @param view
+     */
     protected abstract void setInAnimation(View view);
 
+    /**
+     * setOutAnimation
+     * @param view
+     */
     protected abstract void setOutAnimation(View view);
 
+    /**
+     * getAnimDuration
+     * @param duration
+     * @return
+     */
     protected abstract long getAnimDuration(long duration);
 
     public void in(View view) {
@@ -52,15 +73,18 @@ public abstract class BaseEffect {
         setOutAnimation(view);
         mAnimatorSet.start();
     }
+
     public void reset(View view) {
         ViewHelper.setPivotX(view, view.getWidth() / 2.0f);
         ViewHelper.setPivotY(view, view.getHeight() / 2.0f);
     }
+
     public BaseEffect setDuration(long duration) {
         this.mDuration = duration;
         return this;
     }
-    public long getDuration(){
+
+    public long getDuration() {
         return getAnimDuration(mDuration);
     }
 

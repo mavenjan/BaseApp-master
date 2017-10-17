@@ -24,15 +24,25 @@
 
 package com.cauc.mavenj.materialintro.app;
 
+/**
+ * @author Maven Jan
+ * @time
+ * @describe 描述
+ */
+
 public interface NavigationPolicy {
 
     /**
      * Return true if going forwards is allowed.
+     * @param position
+     * @return
      */
     boolean canGoForward(int position);
 
     /**
      * Return true if going backwards is allowed.
+     * @param position
+     * @return
      */
     boolean canGoBackward(int position);
 }

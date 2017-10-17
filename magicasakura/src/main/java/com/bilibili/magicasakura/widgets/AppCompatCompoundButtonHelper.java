@@ -35,7 +35,9 @@ import com.bilibili.magicasakura.utils.TintManager;
  * @author xyczero617@gmail.com
  * @time 15/11/23
  */
-public class AppCompatCompoundButtonHelper extends AppCompatBaseHelper {
+public class AppCompatCompoundButtonHelper extends BaseAppCompatHelper {
+    private int numeber2 = 2;
+
     private static final int[] ATTRS = {
             android.R.attr.button,
             R.attr.compoundButtonTint,
@@ -56,7 +58,7 @@ public class AppCompatCompoundButtonHelper extends AppCompatBaseHelper {
         TypedArray array = mView.getContext().obtainStyledAttributes(attrs, ATTRS, defStyleAttr, 0);
         if (array.hasValue(1)) {
             mCompoundButtonTintResId = array.getResourceId(1, 0);
-            if (array.hasValue(2)) {
+            if (array.hasValue(numeber2)) {
                 setSupportButtonDrawableTintMode(DrawableUtils.parseTintMode(array.getInt(2, 0), null));
             }
             setSupportButtonDrawableTint(mCompoundButtonTintResId);
@@ -73,7 +75,10 @@ public class AppCompatCompoundButtonHelper extends AppCompatBaseHelper {
      * External use
      */
     public void setButtonDrawable() {
-        if (skipNextApply()) return;
+        if (skipNextApply()) {
+            return;
+        }
+
 
         resetTintResource(0);
         setSkipNextApply(false);
@@ -109,7 +114,10 @@ public class AppCompatCompoundButtonHelper extends AppCompatBaseHelper {
      * Internal use
      */
     private void setButtonDrawable(Drawable drawable) {
-        if (skipNextApply()) return;
+        if (skipNextApply()) {
+            return;
+        }
+
 
         ((CompoundButton) mView).setButtonDrawable(drawable);
     }
@@ -190,8 +198,19 @@ public class AppCompatCompoundButtonHelper extends AppCompatBaseHelper {
     }
 
     public interface CompoundButtonExtensible {
+        /**
+         * button tint
+         *
+         * @param resId resource id
+         */
         void setCompoundButtonTintList(int resId);
 
+        /**
+         * button tint
+         *
+         * @param resId resource id
+         * @param mode PorterDuff.Mode
+         */
         void setCompoundButtonTintList(int resId, PorterDuff.Mode mode);
     }
 }

@@ -28,6 +28,7 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.VisibleForTesting;
 import android.util.AttributeSet;
 import android.util.StateSet;
 import android.util.TypedValue;
@@ -47,8 +48,10 @@ import java.io.IOException;
 public class DrawableUtils {
 
     static Drawable createDrawable(Context context, int resId) {
-        if (resId <= 0) return null;
-
+        if (resId <= 0) {
+            return null;
+        }
+        String fileType = "xml";
         final TypedValue typedValue = new TypedValue();
         final Resources res = context.getResources();
         res.getValue(resId, typedValue, true);
@@ -59,7 +62,8 @@ public class DrawableUtils {
             dr = new ColorDrawable(ThemeUtils.replaceColorById(context, resId));
         } else {
             try {
-                if (typedValue.string != null && typedValue.string.toString().endsWith("xml")) {
+
+                if (typedValue.string != null && typedValue.string.toString().endsWith(fileType)) {
                     final XmlResourceParser rp = res.getXml(resId);
                     final AttributeSet attrs = Xml.asAttributeSet(rp);
                     int type;
@@ -167,7 +171,9 @@ public class DrawableUtils {
 
     static ColorFilter getAttrColorFilter(Context context, AttributeSet attrs, int tintAttr, int tintModeAttr) {
         final int color = getAttrColor(context, attrs, tintAttr, Color.TRANSPARENT);
-        if (color == Color.TRANSPARENT) return null;
+        if (color == Color.TRANSPARENT) {
+            return null;
+        }
         return new PorterDuffColorFilter(color, getTintMode(context, attrs, tintModeAttr));
     }
 

@@ -11,6 +11,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+/**
+ * @author Maven Jan
+ */
+
 public class ParallaxUtil {
     private ParallaxUtil() {}
 

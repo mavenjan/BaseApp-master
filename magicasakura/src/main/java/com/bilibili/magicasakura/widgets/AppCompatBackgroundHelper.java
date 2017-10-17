@@ -35,7 +35,9 @@ import com.bilibili.magicasakura.utils.TintManager;
  * @author xyczero617@gmail.com
  * @time 15/9/26
  */
-public class AppCompatBackgroundHelper extends AppCompatBaseHelper {
+public class AppCompatBackgroundHelper extends BaseAppCompatHelper {
+
+    private int numeber2 = 2;
 
     private static final int[] ATTR = {
             android.R.attr.background,
@@ -61,7 +63,7 @@ public class AppCompatBackgroundHelper extends AppCompatBaseHelper {
         TypedArray array = mView.getContext().obtainStyledAttributes(attrs, ATTR, defStyleAttr, 0);
         if (array.hasValue(1)) {
             mBackgroundTintResId = array.getResourceId(1, 0);
-            if (array.hasValue(2)) {
+            if (array.hasValue(numeber2)) {
                 setSupportBackgroundTintMode(DrawableUtils.parseTintMode(array.getInt(2, 0), null));
             }
             setSupportBackgroundTint(mBackgroundTintResId);
@@ -80,7 +82,9 @@ public class AppCompatBackgroundHelper extends AppCompatBaseHelper {
      * @param background
      */
     public void setBackgroundDrawableExternal(Drawable background) {
-        if (skipNextApply()) return;
+        if (skipNextApply()) {
+            return;
+        }
 
         resetTintResource(0);
         setSkipNextApply(false);
@@ -88,7 +92,9 @@ public class AppCompatBackgroundHelper extends AppCompatBaseHelper {
     }
 
     public void setBackgroundColor(int color) {
-        if (skipNextApply()) return;
+        if (skipNextApply()) {
+            return;
+        }
 
         resetTintResource(0);
         mView.setBackgroundColor(ThemeUtils.getColor(mView.getContext(), color));
@@ -122,9 +128,11 @@ public class AppCompatBackgroundHelper extends AppCompatBaseHelper {
      * Internal use
      */
     private void setBackgroundDrawable(Drawable drawable) {
-        if (skipNextApply()) return;
+        if (skipNextApply()) {
+            return;
+        }
 
-        setBackground(drawable);
+        mView.setBackground(drawable);
         recoverPadding(drawable);
     }
 
@@ -169,14 +177,6 @@ public class AppCompatBackgroundHelper extends AppCompatBaseHelper {
         return false;
     }
 
-    private void setBackground(Drawable backgroundDrawable) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            mView.setBackgroundDrawable(backgroundDrawable);
-        } else {
-            mView.setBackground(backgroundDrawable);
-        }
-    }
-
     private void resetTintResource(int resId/*background resource id*/) {
         mBackgroundResId = resId;
         mBackgroundTintResId = 0;
@@ -217,8 +217,19 @@ public class AppCompatBackgroundHelper extends AppCompatBaseHelper {
     }
 
     public interface BackgroundExtensible {
+        /**
+         * 设置背景
+         *
+         * @param resId resource id
+         */
         void setBackgroundTintList(int resId);
 
+        /**
+         * 设置背景
+         *
+         * @param resId resource id
+         * @param mode  PorterDuff.Mode
+         */
         void setBackgroundTintList(int resId, PorterDuff.Mode mode);
     }
 }

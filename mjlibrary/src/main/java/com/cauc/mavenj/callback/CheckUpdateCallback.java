@@ -1,7 +1,7 @@
 package com.cauc.mavenj.callback;
 
 /**
- * Created by qiang_xi on 2016/10/6 13:10.
+ * @author qiang_xi on 2016/10/6 13:10.
  * 检查更新回调
  */
 

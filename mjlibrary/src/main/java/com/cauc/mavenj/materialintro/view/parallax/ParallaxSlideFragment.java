@@ -11,6 +11,11 @@ import com.cauc.mavenj.materialintro.view.parallax.util.ParallaxUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Maven Jan
+ * @time
+ * @describe 描述
+ */
 
 public class ParallaxSlideFragment extends SlideFragment implements Parallaxable {
 

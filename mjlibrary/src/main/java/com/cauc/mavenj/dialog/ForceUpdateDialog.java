@@ -27,50 +27,113 @@ import android.widget.Toast;
 import com.cauc.mavenj.R;
 import com.cauc.mavenj.callback.DownloadCallback;
 import com.cauc.mavenj.http.HttpRequest;
-import com.cauc.mavenj.listener.PermissionListener;
 import com.cauc.mavenj.utils.ApplicationUtil;
 import com.cauc.mavenj.utils.NetWorkUtils;
 import com.cauc.mavenj.widget.NumberProgressBar;
 
 import java.io.File;
-import java.util.List;
 
 import static com.cauc.mavenj.dialog.UpdateDialog.UPDATE_DIALOG_PERMISSION_REQUEST_CODE;
 
 
 /**
- * Created by qiang_xi on 2016/10/6 14:34.
+ * @author  qiang_xi on 2016/10/6 14:34.
  * 强制更新对话框
  */
 
 public class ForceUpdateDialog extends Dialog {
     private Context context;
     private View view;
-    private TextView forceUpdateTitle;//标题
-    private TextView forceUpdateTime; //发布时间
-    private TextView forceUpdateVersion;//版本名
-    private TextView forceUpdateSize;//软件大小
-    private TextView forceUpdateDesc;//更新日志
-    private LinearLayout forceUpdateDescLayout;//更新日志根布局
-    private TextView forceUpdateNetworkState;//网络状况
-    private NumberProgressBar forceUpdateProgress;//下载进度
-    private Button forceUpdate;//开始更新
-    private Button exitApp;//退出应用
+    /**
+     * 标题
+     */
+    private TextView forceUpdateTitle;
+    /**
+     * 发布时间
+     */
+    private TextView forceUpdateTime;
+    /**
+     * 版本名
+     */
+    private TextView forceUpdateVersion;
+    /**
+     * 软件大小
+     */
+    private TextView forceUpdateSize;
+    /**
+     * 更新日志
+     */
+    private TextView forceUpdateDesc;
+    /**
+     * 更新日志根布局
+     */
+    private LinearLayout forceUpdateDescLayout;
+    /**
+     * 网络状况
+     */
+    private TextView forceUpdateNetworkState;
+    /**
+     * 下载进度
+     */
+    private NumberProgressBar forceUpdateProgress;
+    /**
+     * 开始更新
+     */
+    private Button forceUpdate;
+    /**
+     * 退出应用
+     */
+    private Button exitApp;
+    /**
+     * 软件下载地址
+     */
+    private String mDownloadUrl;
+    /**
+     * 标题
+     */
+    private String mTitle;
+    /**
+     * 发布时间
+     */
+    private String mAppTime;
+    /**
+     * 版本名
+     */
+    private String mVersionName;
+    /**
+     * 软件大小
+     */
+    private float mAppSize;
+    /**
+     * 更新日志
+     */
+    private String mAppDesc;
+    /**
+     * 文件存储路径
+     */
+    private String mFilePath;
+    /**
+     * 自定义的文件名
+     */
+    private String mFileName;
+    /**
+     * 时间间隔
+     */
+    private long timeRange;
 
-    private String mDownloadUrl;//软件下载地址
-    private String mTitle;//标题
-    private String mAppTime;//发布时间
-    private String mVersionName;//版本名
-    private float mAppSize;//软件大小
-    private String mAppDesc;//更新日志
-    private String mFilePath;//文件存储路径
-    private String mFileName;//自定义的文件名
-    private long timeRange;//时间间隔
+    /**
+     * 兼容v4版本fragment
+     */
+    private Fragment mCompatFragmentCallback;
+    /**
+     * 兼容3.0的fragment
+     */
+    private android.app.Fragment mFragmentCallback;
 
-    private Fragment mCompatFragmentCallback;//兼容v4版本fragment
-    private android.app.Fragment mFragmentCallback;//兼容3.0的fragment
-
-    public static final int FORCE_UPDATE_DIALOG_PERMISSION_REQUEST_CODE = 1;//权限请求码
+    /**
+     * 权限请求码
+     */
+    public static final int FORCE_UPDATE_DIALOG_PERMISSION_REQUEST_CODE = 1;
 
     /**
      * 在activity中动态请求权限使用这个构造方法
@@ -102,15 +165,18 @@ public class ForceUpdateDialog extends Dialog {
      * set dialog theme(设置对话框主题)
      */
     private void setDialogTheme() {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);// android:windowNoTitle
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);// android:backgroundDimEnabled默认是true的
-        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));// android:windowBackground
+        // android:windowNoTitle
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // android:backgroundDimEnabled默认是true的
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        // android:windowBackground
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        view = LayoutInflater.from(context).inflate(R.layout.checkupdatelibrary_force_update_dialog_layout, null);
+        view = LayoutInflater.from(context).inflate(R.layout.mj_checkupdatelibrary_force_update_dialog_layout, null);
         setContentView(view);
         initView();
         initData();
@@ -202,9 +268,11 @@ public class ForceUpdateDialog extends Dialog {
         });
     }
 
+    private int time = 500;
+
     public void download() {
         //防抖动,两次点击间隔小于500ms都return;
-        if (System.currentTimeMillis() - timeRange < 500) {
+        if (System.currentTimeMillis() - timeRange < time) {
             return;
         }
         timeRange = System.currentTimeMillis();
@@ -213,7 +281,8 @@ public class ForceUpdateDialog extends Dialog {
             Toast.makeText(context, "当前无网络连接", Toast.LENGTH_SHORT).show();
             return;
         }
-        if ("点击安装".equals(forceUpdate.getText().toString().trim())) {
+        String clickOnTheInstall = "点击安装";
+        if (clickOnTheInstall.equals(forceUpdate.getText().toString().trim())) {
             File file = new File(mFilePath, mFileName);
             if (file.exists()) {
                 ApplicationUtil.installApk(context, file);

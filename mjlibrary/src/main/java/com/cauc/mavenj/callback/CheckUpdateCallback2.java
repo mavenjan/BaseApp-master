@@ -1,7 +1,7 @@
 package com.cauc.mavenj.callback;
 
 /**
- * 作者 任强强 on 2016/10/18 10:39.
+ * @author 任强强 on 2016/10/18 10:39.
  */
 
 public interface CheckUpdateCallback2 {

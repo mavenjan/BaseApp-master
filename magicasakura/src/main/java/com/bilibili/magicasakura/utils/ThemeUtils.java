@@ -37,6 +37,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StyleRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.view.ContextThemeWrapper;
@@ -61,10 +62,13 @@ import java.lang.reflect.Method;
 import java.util.LinkedList;
 
 /**
- * Created by xyczero on 15/9/6.
+ * @author xyczero on 15/9/6.
  * Email : xyczero@sina.com
  */
 public class ThemeUtils {
+
+    private static Context mContext;
+
     private static final ThreadLocal<TypedValue> TL_TYPED_VALUE = new ThreadLocal<>();
 
     public static final int[] DISABLED_STATE_SET = new int[]{-android.R.attr.state_enabled};
@@ -80,7 +84,9 @@ public class ThemeUtils {
 
 
     public static Drawable tintDrawable(Drawable drawable, @ColorInt int color, PorterDuff.Mode mode) {
-        if (drawable == null) return null;
+        if (drawable == null) {
+            return null;
+        }
         Drawable wrapper = DrawableCompat.wrap(drawable.mutate());
         DrawableCompat.setTint(wrapper, color);
         DrawableCompat.setTintMode(drawable, mode);
@@ -88,8 +94,10 @@ public class ThemeUtils {
     }
 
     public static Drawable tintDrawable(Context context, @DrawableRes int resId, @ColorRes int colorId) {
-        if (resId <= 0 || colorId <= 0) return null;
-        Drawable drawable = context.getResources().getDrawable(resId);
+        if (resId <= 0 || colorId <= 0) {
+            return null;
+        }
+        Drawable drawable = ContextCompat.getDrawable(context, resId);
         return tintDrawableByColorId(context, drawable, colorId);
     }
 
@@ -98,19 +106,27 @@ public class ThemeUtils {
     }
 
     public static Drawable tintDrawableByDrawableId(Context context, @DrawableRes int resId, @ColorInt int color) {
-        if (resId <= 0) return null;
-        Drawable drawable = context.getResources().getDrawable(resId);
+        if (resId <= 0) {
+            return null;
+        }
+        Drawable drawable = ContextCompat.getDrawable(context, resId);
         return tintDrawable(drawable, color);
     }
 
     public static Drawable tintDrawableByColorId(Context context, Drawable drawable, @ColorRes int colorId) {
-        if (drawable == null) return null;
-        if (colorId <= 0) return drawable;
-        return tintDrawable(drawable, replaceColor(context, context.getResources().getColor(colorId)));
+        if (drawable == null) {
+            return null;
+        }
+        if (colorId <= 0) {
+            return drawable;
+        }
+        return tintDrawable(drawable, replaceColor(context, ContextCompat.getColor(context, colorId)));
     }
 
     public static Drawable tintDrawable(Drawable drawable, ColorStateList cls, PorterDuff.Mode mode) {
-        if (drawable == null) return null;
+        if (drawable == null) {
+            return null;
+        }
         Drawable wrapper = DrawableCompat.wrap(drawable.mutate());
         DrawableCompat.setTintList(wrapper, cls);
         DrawableCompat.setTintMode(drawable, mode);
@@ -118,20 +134,27 @@ public class ThemeUtils {
     }
 
     public static Drawable tintDrawableByColorList(Context context, Drawable drawable, @ColorRes int colorListId, PorterDuff.Mode mode) {
-        if (drawable == null) return null;
-        if (colorListId <= 0) return drawable;
+        if (drawable == null) {
+            return null;
+        }
+        if (colorListId <= 0) {
+            return drawable;
+        }
         return tintDrawable(drawable, TintManager.get(context).getColorStateList(colorListId), mode == null ? PorterDuff.Mode.SRC_IN : mode);
     }
 
-    public static @ColorInt int getColorById(Context context, @ColorRes int colorId) {
+    public static @ColorInt
+    int getColorById(Context context, @ColorRes int colorId) {
         return replaceColorById(context, colorId);
     }
 
-    public static @ColorInt int getColor(Context context, @ColorInt int color) {
+    public static @ColorInt
+    int getColor(Context context, @ColorInt int color) {
         return replaceColor(context, color);
     }
 
-    public static @ColorInt int getThemeAttrColor(Context context, @AttrRes int attr) {
+    public static @ColorInt
+    int getThemeAttrColor(Context context, @AttrRes int attr) {
         return hasThemeAttr(context, attr) ? replaceColorById(context, getThemeAttrId(context, attr)) : Color.TRANSPARENT;
     }
 
@@ -225,10 +248,13 @@ public class ThemeUtils {
             typedValue = new TypedValue();
             TL_TYPED_VALUE.set(typedValue);
         }
+        TL_TYPED_VALUE.remove();
         return typedValue;
     }
 
-    // skip animated-selector when android version is 5.0.x
+    /**
+     * skip animated-selector when android version is 5.0.x
+     */
     private static boolean isSkipAnimatedSelector = false;
     private static boolean hasRecordedVersion = false;
 
@@ -287,7 +313,9 @@ public class ThemeUtils {
     }
 
     public static ContextWrapper getWrapperContext(Context context, @StyleRes int themeId) {
-        if (context == null) return null;
+        if (context == null) {
+            return null;
+        }
 
         return new ContextThemeWrapper(context, themeId);
     }
@@ -306,7 +334,9 @@ public class ThemeUtils {
     }
 
     static com.bilibili.magicasakura.utils.TintInfo parseColorStateList(ColorStateList origin) {
-        if (origin == null) return null;
+        if (origin == null) {
+            return null;
+        }
 
         boolean hasDisable = false;
         int originDefaultColor = origin.getDefaultColor();
@@ -364,7 +394,9 @@ public class ThemeUtils {
     }
 
     public static ColorStateList getThemeColorStateList(Context context, ColorStateList origin) {
-        if (origin == null) return null;
+        if (origin == null) {
+            return null;
+        }
 
         if (origin.isStateful()) {
             TintInfo tintInfo = parseColorStateList(origin);
@@ -423,7 +455,9 @@ public class ThemeUtils {
     private static Method sListViewClearMethod;
 
     private static void refreshView(View view, ExtraRefreshable extraRefreshable) {
-        if (view == null) return;
+        if (view == null) {
+            return;
+        }
 
         view.destroyDrawingCache();
         if (view instanceof Tintable) {
@@ -503,28 +537,52 @@ public class ThemeUtils {
     }
 
     public interface ExtraRefreshable {
+        /**
+         * refreshGlobal
+         * @param activity
+         */
         void refreshGlobal(Activity activity);
 
+        /**
+         * refreshSpecificView
+         * @param view
+         */
         void refreshSpecificView(View view);
     }
 
-    public static switchColor mSwitchColor;
+    public static SwitchColor mSwitchColor;
 
-    public static void setSwitchColor(switchColor switchColor) {
+    public static void setSwitchColor(SwitchColor switchColor) {
         mSwitchColor = switchColor;
     }
 
-    static @ColorInt int replaceColorById(Context context, @ColorRes int colorId) {
-        return mSwitchColor == null ? context.getResources().getColor(colorId) : mSwitchColor.replaceColorById(context, colorId);
+    static @ColorInt
+    int replaceColorById(Context context, @ColorRes int colorId) {
+        return mSwitchColor == null ? ContextCompat.getColor(context, colorId) : mSwitchColor.replaceColorById(context, colorId);
     }
 
-    static @ColorInt int replaceColor(Context context, @ColorInt int color) {
+    static @ColorInt
+    int replaceColor(Context context, @ColorInt int color) {
         return mSwitchColor == null ? color : mSwitchColor.replaceColor(context, color);
     }
 
-    public interface switchColor {
-        @ColorInt int replaceColorById(Context context, @ColorRes int colorId);
+    public interface SwitchColor {
+        /**
+         * replaceColorById
+         * @param context
+         * @param colorId
+         * @return
+         */
+        @ColorInt
+        int replaceColorById(Context context, @ColorRes int colorId);
 
-        @ColorInt int replaceColor(Context context, @ColorInt int color);
+        /**
+         * replaceColor
+         * @param context
+         * @param color
+         * @return
+         */
+        @ColorInt
+        int replaceColor(Context context, @ColorInt int color);
     }
 }

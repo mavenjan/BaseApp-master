@@ -3,8 +3,7 @@ package com.cauc.mavenj.widget.roundmcolor;
 import java.util.List;
 
 /**
- *
- * Created by bruce on 15/2/9.
+ * @author bruce on 15/2/9.
  */
 public class ColorInfo {
     Range hueRange;

@@ -30,6 +30,12 @@ import android.widget.FrameLayout;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * @author Maven Jan
+ * @time
+ * @describe 描述
+ */
+
 public class Manager extends Handler {
     private static final class Messages {
         private Messages() {

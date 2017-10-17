@@ -32,7 +32,7 @@ import okhttp3.ResponseBody;
 
 /**
  * ================================================
- * 作    者：jeasonlzy（廖子尧）Github地址：https://github.com/jeasonlzy
+ * @author ：jeasonlzy（廖子尧）Github地址：https://github.com/jeasonlzy
  * 版    本：1.0
  * 创建日期：16/9/11
  * 描    述：
@@ -91,9 +91,13 @@ public class JsonConvert<T> implements Converter<T> {
     }
 
     private T parseClass(Response response, Class<?> rawType) throws Exception {
-        if (rawType == null) return null;
+        if (rawType == null) {
+            return null;
+        }
         ResponseBody body = response.body();
-        if (body == null) return null;
+        if (body == null) {
+            return null;
+        }
         JsonReader jsonReader = new JsonReader(body.charStream());
 
         if (rawType == String.class) {
@@ -113,9 +117,13 @@ public class JsonConvert<T> implements Converter<T> {
     }
 
     private T parseType(Response response, Type type) throws Exception {
-        if (type == null) return null;
+        if (type == null) {
+            return null;
+        }
         ResponseBody body = response.body();
-        if (body == null) return null;
+        if (body == null) {
+            return null;
+        }
         JsonReader jsonReader = new JsonReader(body.charStream());
 
         // 泛型格式如下： new JsonCallback<任意JavaBean>(this)
@@ -125,13 +133,19 @@ public class JsonConvert<T> implements Converter<T> {
     }
 
     private T parseParameterizedType(Response response, ParameterizedType type) throws Exception {
-        if (type == null) return null;
+        if (type == null) {
+            return null;
+        }
         ResponseBody body = response.body();
-        if (body == null) return null;
+        if (body == null) {
+            return null;
+        }
         JsonReader jsonReader = new JsonReader(body.charStream());
 
-        Type rawType = type.getRawType();                     // 泛型的实际类型
-        Type typeArgument = type.getActualTypeArguments()[0]; // 泛型的参数
+        // 泛型的实际类型
+        Type rawType = type.getRawType();
+        // 泛型的参数
+        Type typeArgument = type.getActualTypeArguments()[0];
         if (rawType != LzyResponse.class) {
             // 泛型格式如下： new JsonCallback<外层BaseBean<内层JavaBean>>(this)
             T t = Convert.fromJson(jsonReader, type);
@@ -149,14 +163,16 @@ public class JsonConvert<T> implements Converter<T> {
                 LzyResponse lzyResponse = Convert.fromJson(jsonReader, type);
                 response.close();
                 int code = lzyResponse.code;
+                int number104 = 104;
+                int number105 = 105;
                 //这里的0是以下意思
                 //一般来说服务器会和客户端约定一个数表示成功，其余的表示失败，这里根据实际情况修改
                 if (code == 0) {
                     //noinspection unchecked
                     return (T) lzyResponse;
-                } else if (code == 104) {
+                } else if (code == number104) {
                     throw new IllegalStateException("用户授权信息无效");
-                } else if (code == 105) {
+                } else if (code == number105) {
                     throw new IllegalStateException("用户收取信息已过期");
                 } else {
                     //直接将服务端的错误信息抛出，onError中可以获取

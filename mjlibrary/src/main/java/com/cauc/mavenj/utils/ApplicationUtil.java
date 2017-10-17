@@ -14,6 +14,7 @@ import android.util.Log;
 import java.io.File;
 
 /**
+ * @author Maven Jan
  * 获取应用相关信息工具类
  */
 public class ApplicationUtil {

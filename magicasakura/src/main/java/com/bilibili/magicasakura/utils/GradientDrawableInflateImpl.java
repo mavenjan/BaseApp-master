@@ -65,11 +65,11 @@ class GradientDrawableInflateImpl implements DrawableInflateDelegate {
 
             String name = parser.getName();
 
-            if (name.equals("size")) {
+            if ("size".equals(name)) {
                 final int width = DrawableUtils.getAttrDimensionPixelSize(context, attrs, android.R.attr.width);
                 final int height = DrawableUtils.getAttrDimensionPixelSize(context, attrs, android.R.attr.height);
                 gradientDrawable.setSize(width, height);
-            } else if (name.equals("gradient") && Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+            } else if ("gradient".equals(name) && Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
                 final float centerX = getAttrFloatOrFraction(context, attrs, android.R.attr.centerX, 0.5f, 1.0f, 1.0f);
                 final float centerY = getAttrFloatOrFraction(context, attrs, android.R.attr.centerY, 0.5f, 1.0f, 1.0f);
                 gradientDrawable.setGradientCenter(centerX, centerY);
@@ -124,14 +124,16 @@ class GradientDrawableInflateImpl implements DrawableInflateDelegate {
                         case 315:
                             gradientDrawable.setOrientation(GradientDrawable.Orientation.TL_BR);
                             break;
+                        default:
+                            break;
                     }
                 } else {
                     setGradientRadius(context, attrs, gradientDrawable, gradientType);
                 }
-            } else if (name.equals("solid")) {
+            } else if ("solid".equals(name)) {
                 int color = DrawableUtils.getAttrColor(context, attrs, android.R.attr.color, Color.TRANSPARENT);
                 gradientDrawable.setColor(getAlphaColor(color, DrawableUtils.getAttrFloat(context, attrs, android.R.attr.alpha, 1.0f)));
-            } else if (name.equals("stroke")) {
+            } else if ("stroke".equals(name)) {
                 final float alphaMod = DrawableUtils.getAttrFloat(context, attrs, android.R.attr.alpha, 1.0f);
                 final int strokeColor = DrawableUtils.getAttrColor(context, attrs, android.R.attr.color, Color.TRANSPARENT);
                 final int strokeWidth = DrawableUtils.getAttrDimensionPixelSize(context, attrs, android.R.attr.width);
@@ -142,7 +144,7 @@ class GradientDrawableInflateImpl implements DrawableInflateDelegate {
                 } else {
                     gradientDrawable.setStroke(strokeWidth, getAlphaColor(strokeColor, alphaMod));
                 }
-            } else if (name.equals("corners")) {
+            } else if ("corners".equals(name)) {
                 final int radius = DrawableUtils.getAttrDimensionPixelSize(context, attrs, android.R.attr.radius);
                 gradientDrawable.setCornerRadius(radius);
 
@@ -160,7 +162,7 @@ class GradientDrawableInflateImpl implements DrawableInflateDelegate {
                             bottomLeftRadius, bottomLeftRadius
                     });
                 }
-            } else if (name.equals("padding")) {
+            } else if ("padding".equals(name)) {
                 final int paddingLeft = DrawableUtils.getAttrDimensionPixelOffset(context, attrs, android.R.attr.left);
                 final int paddingTop = DrawableUtils.getAttrDimensionPixelOffset(context, attrs, android.R.attr.top);
                 final int paddingRight = DrawableUtils.getAttrDimensionPixelOffset(context, attrs, android.R.attr.right);

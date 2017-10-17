@@ -72,7 +72,7 @@ import android.view.animation.Interpolator;
 import android.widget.Button;
 
 import com.cauc.mavenj.R;
-import com.cauc.mavenj.databinding.MiActivityIntroBinding;
+import com.cauc.mavenj.databinding.MjActivityIntroBinding;
 import com.cauc.mavenj.materialintro.slide.ButtonCtaSlide;
 import com.cauc.mavenj.materialintro.slide.Slide;
 import com.cauc.mavenj.materialintro.slide.SlideAdapter;
@@ -86,6 +86,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+/**
+ * @author Maven Jan
+ * @time
+ * @describe 描述
+ */
 
 @SuppressLint("Registered")
 public class IntroActivity extends AppCompatActivity implements IntroNavigation {
@@ -131,7 +137,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
 
     private final ArgbEvaluator evaluator = new ArgbEvaluator();
 
-    private MiActivityIntroBinding binding;
+    private MjActivityIntroBinding binding;
 
     private SlideAdapter adapter;
 
@@ -141,6 +147,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     private float positionOffset = 0;
 
     //Settings
+
     private boolean fullscreen = false;
     private boolean buttonCtaVisible = false;
     @ButtonNextFunction
@@ -195,7 +202,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         }
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        binding = DataBindingUtil.setContentView(this, R.layout.mi_activity_intro);
+        binding = DataBindingUtil.setContentView(this, R.layout.mj_activity_intro);
         initViews();
     }
 
@@ -226,8 +233,9 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
 
     @Override
     public void onUserInteraction() {
-        if (isAutoplaying())
+        if (isAutoplaying()) {
             cancelAutoplay();
+        }
     }
 
     @Override
@@ -252,10 +260,11 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
             return;
         }
         Intent returnIntent = onSendActivityResult(RESULT_CANCELED);
-        if (returnIntent != null)
+        if (returnIntent != null) {
             setResult(RESULT_CANCELED, returnIntent);
-        else
+        } else {
             setResult(RESULT_CANCELED);
+        }
         super.onBackPressed();
     }
 
@@ -310,19 +319,19 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
 
         resetButtonNextOnClickListener();
         resetButtonBackOnClickListener();
-        
+
         CheatSheet.setup(binding.miButtonNext);
         CheatSheet.setup(binding.miButtonBack);
     }
-    
+
     public void setButtonNextOnClickListener(View.OnClickListener onClickListener) {
         binding.miButtonNext.setOnClickListener(onClickListener);
     }
-    
+
     public void setButtonBackOnClickListener(View.OnClickListener onClickListener) {
         binding.miButtonBack.setOnClickListener(onClickListener);
     }
-    
+
     public void resetButtonNextOnClickListener() {
         binding.miButtonNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -331,7 +340,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
             }
         });
     }
-    
+
     public void resetButtonBackOnClickListener() {
         binding.miButtonBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -342,22 +351,25 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     }
 
     private void smoothScrollPagerTo(final int position) {
-        if (binding.miPager.isFakeDragging())
+        if (binding.miPager.isFakeDragging()) {
             return;
+        }
 
         ValueAnimator animator = ValueAnimator.ofFloat(binding.miPager.getCurrentItem(), position);
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (binding.miPager.isFakeDragging())
+                if (binding.miPager.isFakeDragging()) {
                     binding.miPager.endFakeDrag();
+                }
                 binding.miPager.setCurrentItem(position);
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
-                if (binding.miPager.isFakeDragging())
+                if (binding.miPager.isFakeDragging()) {
                     binding.miPager.endFakeDrag();
+                }
             }
         });
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -380,8 +392,9 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
                     binding.miPager.setCurrentItem((int) Math.ceil(position), false);
                 }
 
-                if (!binding.miPager.isFakeDragging() && !binding.miPager.beginFakeDrag())
+                if (!binding.miPager.isFakeDragging() && !binding.miPager.beginFakeDrag()) {
                     return false;
+                }
 
                 binding.miPager.fakeDragBy(scrollX - pagerWidth * position);
                 return true;
@@ -460,21 +473,24 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
             while (lastPosition >= 0 && canGoBackward(lastPosition, true)) {
                 lastPosition--;
             }
-            if (autoplayCounter > 0)
+            if (autoplayCounter > 0) {
                 autoplayCounter--;
+            }
         } else if (canGoForward(lastPosition, true)) {
             lastPosition++;
         }
 
         int distance = Math.abs(lastPosition - binding.miPager.getCurrentItem());
 
-        if (lastPosition == binding.miPager.getCurrentItem())
+        if (lastPosition == binding.miPager.getCurrentItem()) {
             return 0;
+        }
 
         smoothScrollPagerTo(lastPosition);
 
-        if (autoplayCounter == 0)
+        if (autoplayCounter == 0) {
             return 0;
+        }
         return distance;
 
     }
@@ -512,8 +528,10 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         }
 
         if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT && position >= getCount() - 1)
-            //Block finishing when button "next" function is not "finish".
+        //Block finishing when button "next" function is not "finish".
+        {
             return false;
+        }
 
         boolean canGoForward = (navigationPolicy == null || navigationPolicy.canGoForward(position)) &&
                 getSlide(position).canGoForward();
@@ -547,10 +565,11 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     private boolean finishIfNeeded() {
         if (positionOffset == 0 && position == adapter.getCount()) {
             Intent returnIntent = onSendActivityResult(RESULT_OK);
-            if (returnIntent != null)
+            if (returnIntent != null) {
                 setResult(RESULT_OK, returnIntent);
-            else
+            } else {
                 setResult(RESULT_OK);
+            }
             finish();
             overridePendingTransition(0, 0);
             return true;
@@ -562,8 +581,10 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     private Pair<CharSequence, ? extends View.OnClickListener> getButtonCta(int position) {
         if (position < getCount() && getSlide(position) instanceof ButtonCtaSlide) {
             ButtonCtaSlide slide = (ButtonCtaSlide) getSlide(position);
-            if (slide.getButtonCtaClickListener() != null &&
-                    (slide.getButtonCtaLabel() != null || slide.getButtonCtaLabelRes() != 0)) {
+            boolean isTrue = slide.getButtonCtaClickListener() != null
+                    && (slide.getButtonCtaLabel() != null
+                    || slide.getButtonCtaLabelRes() != 0);
+            if (isTrue) {
                 if (slide.getButtonCtaLabel() != null) {
                     return Pair.create(slide.getButtonCtaLabel(),
                             slide.getButtonCtaClickListener());
@@ -678,7 +699,8 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         ViewCompat.setBackgroundTintList(binding.miButtonCta.getChildAt(1), ColorStateList.valueOf(backgroundButtonCta));
 
         int iconColor;
-        if (ColorUtils.calculateLuminance(backgroundDark) > 0.4) {
+        double number04 = 0.4;
+        if (ColorUtils.calculateLuminance(backgroundDark) > number04) {
             //Light background
             iconColor = ContextCompat.getColor(this, R.color.mi_icon_color_light);
         } else {
@@ -715,7 +737,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 int systemUiVisibility = getWindow().getDecorView().getSystemUiVisibility();
                 int flagLightStatusBar = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-                if (ColorUtils.calculateLuminance(backgroundDark) > 0.4) {
+                if (ColorUtils.calculateLuminance(backgroundDark) > number04) {
                     //Light background
                     systemUiVisibility |= flagLightStatusBar;
                 } else {
@@ -743,8 +765,9 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
                 } else {
                     binding.miButtonCta.setVisibility(View.VISIBLE);
                     //Fade in
-                    if (!((Button) binding.miButtonCta.getCurrentView()).getText().equals(buttonNext.first))
+                    if (!((Button) binding.miButtonCta.getCurrentView()).getText().equals(buttonNext.first)) {
                         binding.miButtonCta.setText(buttonNext.first);
+                    }
                     binding.miButtonCta.getChildAt(0).setOnClickListener(buttonNext.second);
                     binding.miButtonCta.getChildAt(1).setOnClickListener(buttonNext.second);
                     binding.miButtonCta.setAlpha(positionOffset);
@@ -758,8 +781,9 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
                 if (buttonNext == null) {
                     binding.miButtonCta.setVisibility(View.VISIBLE);
                     //Fade out
-                    if (!((Button) binding.miButtonCta.getCurrentView()).getText().equals(button.first))
+                    if (!((Button) binding.miButtonCta.getCurrentView()).getText().equals(button.first)) {
                         binding.miButtonCta.setText(button.first);
+                    }
                     binding.miButtonCta.getChildAt(0).setOnClickListener(button.second);
                     binding.miButtonCta.getChildAt(1).setOnClickListener(button.second);
                     binding.miButtonCta.setAlpha(1 - positionOffset);
@@ -774,14 +798,17 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
                     layoutParams.height = getResources().getDimensionPixelSize(R.dimen.mi_button_cta_height);
                     binding.miButtonCta.setLayoutParams(layoutParams);
                     //Fade text
-                    if (positionOffset >= 0.5f) {
-                        if (!((Button) binding.miButtonCta.getCurrentView()).getText().equals(buttonNext.first))
+                    float onehalf = 0.5f;
+                    if (positionOffset >= onehalf) {
+                        if (!((Button) binding.miButtonCta.getCurrentView()).getText().equals(buttonNext.first)) {
                             binding.miButtonCta.setText(buttonNext.first);
+                        }
                         binding.miButtonCta.getChildAt(0).setOnClickListener(buttonNext.second);
                         binding.miButtonCta.getChildAt(1).setOnClickListener(buttonNext.second);
                     } else {
-                        if (!((Button) binding.miButtonCta.getCurrentView()).getText().equals(button.first))
+                        if (!((Button) binding.miButtonCta.getCurrentView()).getText().equals(button.first)) {
                             binding.miButtonCta.setText(button.first);
+                        }
                         binding.miButtonCta.getChildAt(0).setOnClickListener(button.second);
                         binding.miButtonCta.getChildAt(1).setOnClickListener(button.second);
                     }
@@ -798,6 +825,8 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         }
     }
 
+    int number2 = 2;
+
     private void updateButtonBackPosition() {
         float realPosition = position + positionOffset;
         float yOffset = getResources().getDimensionPixelSize(R.dimen.mi_y_offset);
@@ -805,7 +834,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         if (realPosition < 1 && buttonBackFunction == BUTTON_BACK_FUNCTION_BACK) {
             //Hide back button
             binding.miButtonBack.setTranslationY((1 - positionOffset) * yOffset);
-        } else if (realPosition < adapter.getCount() - 2) {
+        } else if (realPosition < adapter.getCount() - number2) {
             //Reset
             binding.miButtonBack.setTranslationY(0);
             binding.miButtonBack.setTranslationX(0);
@@ -833,8 +862,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     private void updateButtonNextPosition() {
         float realPosition = position + positionOffset;
         float yOffset = getResources().getDimensionPixelSize(R.dimen.mi_y_offset);
-
-        if (realPosition < adapter.getCount() - 2) {
+        if (realPosition < adapter.getCount() - number2) {
             //Reset
             binding.miButtonNext.setTranslationY(0);
         } else if (realPosition < adapter.getCount() - 1) {
@@ -868,8 +896,9 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     }
 
     private void updateParallax() {
-        if (position == getCount())
+        if (position == getCount()) {
             return;
+        }
 
         Fragment fragment = getSlide(position).getFragment();
         Fragment fragmentNext = position < getCount() - 1 ?
@@ -918,11 +947,10 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     private void updateButtonNextDrawable() {
         float realPosition = position + positionOffset;
         float offset = 0;
-
         if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT_FINISH) {
             if (realPosition >= adapter.getCount() - 1) {
                 offset = 1;
-            } else if (realPosition >= adapter.getCount() - 2) {
+            } else if (realPosition >= adapter.getCount() - number2) {
                 offset = positionOffset;
             }
         }
@@ -962,8 +990,9 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
                     return;
                 }
                 int distance = nextSlideAuto();
-                if (distance != 0)
+                if (distance != 0) {
                     autoplayHandler.postDelayed(autoplayCallback, autoplayDelay + calculateScrollDuration(distance));
+                }
             }
         };
         autoplayHandler.postDelayed(autoplayCallback, autoplayDelay);
@@ -1070,6 +1099,8 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
             case BUTTON_BACK_FUNCTION_SKIP:
                 CheatSheet.setup(binding.miButtonBack, R.string.mi_content_description_skip);
                 break;
+            default:
+                break;
         }
         updateButtonBackDrawable();
         updateButtonBackPosition();
@@ -1101,6 +1132,8 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
                 break;
             case BUTTON_NEXT_FUNCTION_NEXT:
                 CheatSheet.setup(binding.miButtonNext, R.string.mi_content_description_next);
+                break;
+            default:
                 break;
         }
         updateButtonNextDrawable();
@@ -1167,8 +1200,9 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
 
     @SuppressWarnings("unused")
     public void removeOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
-        if (listener != this.listener)
+        if (listener != this.listener) {
             binding.miPager.removeOnPageChangeListener(listener);
+        }
     }
 
     @SuppressWarnings("unused")
@@ -1184,8 +1218,9 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
 
     @SuppressWarnings("unused")
     public CharSequence getButtonCtaLabel() {
-        if (buttonCtaLabel != null)
+        if (buttonCtaLabel != null) {
             return buttonCtaLabel;
+        }
         return getString(buttonCtaLabelRes);
     }
 
@@ -1423,8 +1458,9 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
                 return;
             }
 
+            float float01 = 0.1f;
             //Lock while scrolling a slide near its edges to lock (uncommon) multiple page swipes
-            if (Math.abs(positionOffset) < 0.1f) {
+            if (Math.abs(positionOffset) < float01) {
                 lockSwipeIfNeeded();
             }
 

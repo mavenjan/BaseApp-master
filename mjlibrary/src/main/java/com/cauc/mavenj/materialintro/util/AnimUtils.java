@@ -28,6 +28,7 @@ import com.cauc.mavenj.R;
 
 
 /**
+ * @author Maven Jan
  * Utility methods for working with animations.
  */
 public class AnimUtils {

@@ -11,16 +11,29 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Created by Jan Maven on 2017/8/14.
+ * @author Jan Maven on 2017/8/14.
  * Email:cyjiang_11@163.com
  * Description: 时间相关管理工具
  */
 
 public class DateUtils {
 
-    public static final long ONE_MINUTE_MILLIONS = 60 * 1000;
-    public static final long ONE_HOUR_MILLIONS = 60 * ONE_MINUTE_MILLIONS;
+    private static final long ONE_MINUTE_MILLIONS = 60 * 1000;
+    private static final long ONE_HOUR_MILLIONS = 60 * ONE_MINUTE_MILLIONS;
     public static final long ONE_DAY_MILLIONS = 24 * ONE_HOUR_MILLIONS;
+
+    private static int Mon = 2;
+    private static int Tues = 3;
+    private static int Wed = 4;
+    private static int Thur = 5;
+    private static int Fri = 6;
+    private static int Sat = 7;
+    private static int Sun = 1;
+
+    private static int three = 3;
+    private static int eighteen = 18;
+    private static int ten = 10;
+    private static int sixty = 60;
 
     static Calendar calendar = Calendar.getInstance();
     private static List<String> weeklist = new ArrayList<>();
@@ -33,19 +46,19 @@ public class DateUtils {
 
     public static String getWeek(int day) {
 
-        if (day == 7) {
+        if (day == Sat) {
             return "周六";
-        } else if (day == 6) {
+        } else if (day == Fri) {
             return "周五";
-        } else if (day == 5) {
+        } else if (day == Thur) {
             return "周四";
-        } else if (day == 4) {
+        } else if (day == Wed) {
             return "周三";
-        } else if (day == 3) {
+        } else if (day == Tues) {
             return "周二";
-        } else if (day == 2) {
+        } else if (day == Mon) {
             return "周一";
-        } else if (day == 1) {
+        } else if (day == Sun) {
             return "周日";
         }
         return null;
@@ -75,10 +88,10 @@ public class DateUtils {
         List<String> weeklists = getoneweekdate();
         int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
         int nextday;
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < Sat; i++) {
             nextday = day + i;
-            if (nextday > 7) {
-                nextday = nextday - 7;
+            if (nextday > Sat) {
+                nextday = nextday - Sat;
             }
             if (i == 0) {
                 llist.add("今天" + "\n" + weeklists.get(i));
@@ -94,7 +107,7 @@ public class DateUtils {
     public static List<String> getoneweekdate() {
         Calendar cal = Calendar.getInstance();
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < Sat; i++) {
             if (i > 0) {
                 cal.add(Calendar.DATE, 1);
             }
@@ -108,11 +121,7 @@ public class DateUtils {
         SimpleDateFormat format = new SimpleDateFormat("HH");
         int hour = Integer.valueOf(format.format(date));
         System.out.println("hour------------>" + hour);
-        if (hour >= 18 || hour <= 3) {
-            return false;
-        } else {
-            return true;
-        }
+        return !(hour >= eighteen || hour <= three);
     }
 
 
@@ -127,7 +136,7 @@ public class DateUtils {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         try {
             Date date = sdf.parse(dateStr);
-            str=getShortTime(date.getTime());
+            str = getShortTime(date.getTime());
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -154,7 +163,7 @@ public class DateUtils {
 
         int dayStatus = calculateDayStatus(date, new Date());
 
-        if (durTime <= 10 * ONE_MINUTE_MILLIONS) {
+        if (durTime <= ten * ONE_MINUTE_MILLIONS) {
             str = "刚刚";
         } else if (durTime < ONE_HOUR_MILLIONS) {
             str = durTime / ONE_MINUTE_MILLIONS + "分钟前";
@@ -167,7 +176,6 @@ public class DateUtils {
         } else {
             str = DateFormat.format("yyyy-MM", date).toString();
         }
-
 
 
 //        if (durTime <= 10 * ONE_MINUTE_MILLIONS) {
@@ -229,7 +237,7 @@ public class DateUtils {
             long durTime = curDate.getTime() - date.getTime();
             int dayStatus = calculateDayStatus(date, curDate);
 
-            if (durTime <= 10 * ONE_MINUTE_MILLIONS) {
+            if (durTime <= ten * ONE_MINUTE_MILLIONS) {
                 str = "刚刚";
             } else if (durTime < ONE_HOUR_MILLIONS) {
                 str = durTime / ONE_MINUTE_MILLIONS + "分钟前";
@@ -425,7 +433,7 @@ public class DateUtils {
      */
     public static String getTimeString(long timeMillis) {
         long minutes = timeMillis / ONE_MINUTE_MILLIONS;
-        if (minutes < 60) {
+        if (minutes < sixty) {
             return minutes + "分钟";
         } else {
             long remainder = minutes % 60;
@@ -491,7 +499,9 @@ public class DateUtils {
 
         if (monthNow <= monthBirth) {
             if (monthNow == monthBirth) {
-                if (dayOfMonthNow < dayOfMonthBirth) age--;
+                if (dayOfMonthNow < dayOfMonthBirth) {
+                    age--;
+                }
             } else {
                 age--;
             }

@@ -35,7 +35,9 @@ import com.bilibili.magicasakura.utils.TintManager;
  * @author xyczero617@gmail.com
  * @time 15/9/26
  */
-public class AppCompatCompoundDrawableHelper extends AppCompatBaseHelper {
+public class AppCompatCompoundDrawableHelper extends BaseAppCompatHelper {
+
+    private int length = 4;
 
     private static final int[] ATTR = {
             R.attr.drawableLeftTint,
@@ -63,8 +65,8 @@ public class AppCompatCompoundDrawableHelper extends AppCompatBaseHelper {
     void loadFromAttribute(AttributeSet attrs, int defStyleAttr) {
         Context context = mView.getContext();
         TypedArray a = context.obtainStyledAttributes(attrs, ATTR, defStyleAttr, 0);
-        for (int tintIndex = 0; tintIndex < 4; tintIndex++) {
-            int modeIndex = tintIndex + 4;
+        for (int tintIndex = 0; tintIndex < length; tintIndex++) {
+            int modeIndex = tintIndex + length;
             mCompoundDrawableResIds[tintIndex] = a.getResourceId(tintIndex, 0);
             mCompoundDrawableTintResIds[tintIndex] = a.getResourceId(tintIndex, 0);
             if (a.hasValue(modeIndex)) {
@@ -88,7 +90,10 @@ public class AppCompatCompoundDrawableHelper extends AppCompatBaseHelper {
      * External use
      */
     public void setCompoundDrawablesWithIntrinsicBounds() {
-        if (skipNextApply()) return;
+        if (skipNextApply()) {
+            return;
+        }
+
 
         resetTintResource(0, 0, 0, 0);
         setSkipNextApply(false);
@@ -124,7 +129,10 @@ public class AppCompatCompoundDrawableHelper extends AppCompatBaseHelper {
      * Internal use
      */
     private void setCompoundDrawablesWithIntrinsicBounds(Drawable left, Drawable top, Drawable right, Drawable bottom) {
-        if (skipNextApply()) return;
+        if (skipNextApply()) {
+            return;
+        }
+
 
         ((TextView) mView).setCompoundDrawablesWithIntrinsicBounds(left, top, right, bottom);
     }
@@ -211,6 +219,14 @@ public class AppCompatCompoundDrawableHelper extends AppCompatBaseHelper {
     }
 
     public interface CompoundDrawableExtensible {
+        /**
+         * 监听
+         *
+         * @param leftResId
+         * @param topResId
+         * @param rightResId
+         * @param bottomResId
+         */
         void setCompoundDrawableTintList(int leftResId, int topResId, int rightResId, int bottomResId);
     }
 }

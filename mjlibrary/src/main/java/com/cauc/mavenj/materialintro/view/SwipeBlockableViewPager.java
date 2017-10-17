@@ -31,6 +31,12 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+/**
+ * @author Maven Jan
+ * @time
+ * @describe 描述
+ */
+
 public class SwipeBlockableViewPager extends ViewPager {
 
     private static final int SWIPE_LOCK_THRESHOLD = 0;
@@ -81,16 +87,15 @@ public class SwipeBlockableViewPager extends ViewPager {
         boolean allowTouch = false;
         final int action = event.getAction();
         switch (action & MotionEvent.ACTION_MASK) {
-            case MotionEvent.ACTION_DOWN: {
+            case MotionEvent.ACTION_DOWN:
                 lastTouchX = event.getX();
 
                 // Save the ID of this pointer
                 activePointerId = event.getPointerId(0);
-
                 break;
-            }
 
-            case MotionEvent.ACTION_MOVE: {
+
+            case MotionEvent.ACTION_MOVE:
                 // Find the index of the active pointer and fetch its position
                 final int pointerIndex = event.findPointerIndex(activePointerId);
                 final float x = event.getX(pointerIndex);
@@ -125,36 +130,37 @@ public class SwipeBlockableViewPager extends ViewPager {
 
                 invalidate();
                 break;
-            }
 
-            case MotionEvent.ACTION_UP: {
+
+            case MotionEvent.ACTION_UP:
                 activePointerId = INVALID_POINTER_ID;
                 lockedLeft = false;
                 lockedRight = false;
                 break;
-            }
 
-            case MotionEvent.ACTION_CANCEL: {
+
+            case MotionEvent.ACTION_CANCEL:
                 activePointerId = INVALID_POINTER_ID;
                 lockedLeft = false;
                 lockedRight = false;
                 break;
-            }
 
-            case MotionEvent.ACTION_POINTER_UP: {
+
+            case MotionEvent.ACTION_POINTER_UP:
                 // Extract the index of the pointer that left the touch sensor
-                final int pointerIndex = (action & MotionEvent.ACTION_POINTER_INDEX_MASK)
+                final int pointerIndex1 = (action & MotionEvent.ACTION_POINTER_INDEX_MASK)
                         >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
-                final int pointerId = event.getPointerId(pointerIndex);
+                final int pointerId = event.getPointerId(pointerIndex1);
                 if (pointerId == activePointerId) {
                     // This was our active pointer going up. Choose a new
                     // active pointer and adjust accordingly.
-                    final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
+                    final int newPointerIndex = pointerIndex1 == 0 ? 1 : 0;
                     lastTouchX = event.getX(newPointerIndex);
                     activePointerId = event.getPointerId(newPointerIndex);
                 }
                 break;
-            }
+            default:
+                break;
         }
 
         return (!lockedLeft && !lockedRight) || allowTouch;

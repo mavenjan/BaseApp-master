@@ -27,16 +27,29 @@ package com.cauc.mavenj.materialintro.slide;
 import android.support.annotation.StringRes;
 import android.view.View;
 
+/**
+ * getButtonCtaClickListener
+ * @author Maven Jan
+ * @time
+ * @describe 描述
+ */
+
 public interface ButtonCtaSlide extends Slide {
+    /**
+     * getButtonCtaClickListener
+     * @return
+     */
     View.OnClickListener getButtonCtaClickListener();
 
     /**
      * Note: you must either define a {@link CharSequence} or a {@link StringRes} label
+     * @return
      */
     CharSequence getButtonCtaLabel();
 
     /**
      * Note: you must either define a {@link CharSequence} or a {@link StringRes} label
+     * @return
      */
     @StringRes
     int getButtonCtaLabelRes();

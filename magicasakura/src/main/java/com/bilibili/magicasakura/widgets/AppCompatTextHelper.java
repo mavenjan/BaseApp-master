@@ -31,11 +31,13 @@ import com.bilibili.magicasakura.utils.TintManager;
  * @author xyczero617@gmail.com
  * @time 15/9/26
  */
-public class AppCompatTextHelper extends AppCompatBaseHelper {
+public class AppCompatTextHelper extends BaseAppCompatHelper {
 
-    //If writing like this:
-    //int[] ATTRS = { R.attr.tintText, android.R.attr.textColor, android.R.attr.textColorLink, ...};
-    //we can't get textColor value when api is below 20;
+    /**
+     * If writing like this:
+     * int[] ATTRS = { R.attr.tintText, android.R.attr.textColor, android.R.attr.textColorLink, ...};
+     * /we can't get textColor value when api is below 20;
+     */
     private static final int[] ATTRS = {
             android.R.attr.textColor,
             android.R.attr.textColorLink,
@@ -75,7 +77,10 @@ public class AppCompatTextHelper extends AppCompatBaseHelper {
      * External use
      */
     public void setTextColor() {
-        if (skipNextApply()) return;
+        if (skipNextApply()) {
+            return;
+        }
+
 
         resetTextColorTintResource(0);
         setSkipNextApply(false);
@@ -86,7 +91,10 @@ public class AppCompatTextHelper extends AppCompatBaseHelper {
      */
     @Deprecated
     public void setTextLinkColor() {
-        if (skipNextApply()) return;
+        if (skipNextApply()) {
+            return;
+        }
+
 
         resetTextLinkColorTintResource(0);
         setSkipNextApply(false);
@@ -114,7 +122,10 @@ public class AppCompatTextHelper extends AppCompatBaseHelper {
      * Internal use
      */
     private void setTextColor(ColorStateList tint) {
-        if (skipNextApply()) return;
+        if (skipNextApply()) {
+            return;
+        }
+
 
         ((TextView) mView).setTextColor(tint);
     }
@@ -200,6 +211,11 @@ public class AppCompatTextHelper extends AppCompatBaseHelper {
     }
 
     public interface TextExtensible {
+        /**
+         * 设置文字颜色
+         *
+         * @param colorId color resource id
+         */
         void setTextColorById(@ColorRes int colorId);
     }
 }

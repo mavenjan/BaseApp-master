@@ -72,6 +72,8 @@ public class ThemeHelper {
                 return "THE SAND";
             case CARD_FIREY:
                 return "THE FIREY";
+            default:
+                break;
         }
         return "THE RETURN";
     }

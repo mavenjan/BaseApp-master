@@ -10,6 +10,9 @@ import android.widget.RelativeLayout;
 
 import com.cauc.mavenj.R;
 
+/**
+ * @author Maven Jan
+ */
 
 public class ParallaxRelativeLayout extends RelativeLayout implements Parallaxable {
 
@@ -54,7 +57,9 @@ public class ParallaxRelativeLayout extends RelativeLayout implements Parallaxab
         for (int i = getChildCount() - 1; i >= 0; i--) {
             View child = getChildAt(i);
             ParallaxRelativeLayout.LayoutParams p = (LayoutParams) child.getLayoutParams();
-            if (p.parallaxFactor == 0) continue;
+            if (p.parallaxFactor == 0) {
+                continue;
+            }
             child.setTranslationX(getWidth() * -offset * p.parallaxFactor);
         }
     }

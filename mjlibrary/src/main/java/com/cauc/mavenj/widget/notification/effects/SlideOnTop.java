@@ -19,6 +19,12 @@ import android.view.View;
 
 import com.nineoldandroids.animation.ObjectAnimator;
 
+/**
+ * @author Maven Jan
+ * @time
+ * @describe 描述
+ */
+
 public class SlideOnTop extends BaseEffect {
 
     @Override

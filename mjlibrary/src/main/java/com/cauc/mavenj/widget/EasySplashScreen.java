@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.cauc.mavenj.R;
 
 /**
- * Created by pantrif on 2016/4/28.
+ * @author pantrif on 2016/4/28.
  * GitUrl: https://github.com/pantrif/EasySplashScreen.git
  * Description: 可定制化的闪屏页
  */
@@ -22,18 +22,18 @@ public class EasySplashScreen {
 
     Activity mActivity;
     LayoutInflater mInflater;
-    ImageView title_iv;
-    ImageView logo_iv;
-    ImageView desc_iv;
-    TextView header_tv;
-    TextView footer_tv;
-    TextView before_logo_tv;
-    TextView after_logo_tv;
-    String header_text = null;
-    String footer_text = null;
-    String before_logo_text = null;
-    String after_logo_text = null;
-    RelativeLayout splash_wrapper_rl;
+    ImageView ivTitle;
+    ImageView ivLogo;
+    ImageView ivDesc;
+    TextView tvHeader;
+    TextView tvFooter;
+    TextView tvBeforeLogo;
+    TextView tvAfterLogo;
+    String textHeader = null;
+    String textFooter = null;
+    String textBeforeLogo = null;
+    String textAfterLogo = null;
+    RelativeLayout rlSplashWrapper;
     Bundle bundle = null;
     private View mView;
     private int splashBackgroundColor = 0;
@@ -41,14 +41,15 @@ public class EasySplashScreen {
     private int mTitle = 0;
     private int mLogo = 0;
     private int mDesc = 0;
-    private Class<?> TargetActivity = null;
-    private int SPLASH_TIME_OUT = 2000; //The time before launch target Activity - by default 2 seconds
+    private Class<?> targetActivity = null;
+    /** The time before launch target Activity - by default 2 seconds */
+    private int splashTimeOut = 2000;
 
     public EasySplashScreen(Activity activity) {
         this.mActivity = activity;
         this.mInflater = LayoutInflater.from(activity);
-        this.mView = mInflater.inflate(R.layout.splash_easy, null);
-        this.splash_wrapper_rl = (RelativeLayout) mView.findViewById(R.id.splash_wrapper_rl);
+        this.mView = mInflater.inflate(R.layout.mj_splash_easy, null);
+        this.rlSplashWrapper = (RelativeLayout) mView.findViewById(R.id.splash_wrapper_rl);
     }
 
     public EasySplashScreen withFullScreen() {
@@ -58,12 +59,12 @@ public class EasySplashScreen {
     }
 
     public EasySplashScreen withTargetActivity(Class<?> tAct) {
-        this.TargetActivity = tAct;
+        this.targetActivity = tAct;
         return this;
     }
 
     public EasySplashScreen withSplashTimeOut(int timout) {
-        this.SPLASH_TIME_OUT = timout;
+        this.splashTimeOut = timout;
         return this;
     }
 
@@ -74,91 +75,91 @@ public class EasySplashScreen {
 
     public EasySplashScreen withBackgroundColor(int color) {
         this.splashBackgroundColor = color;
-        splash_wrapper_rl.setBackgroundColor(splashBackgroundColor);
+        rlSplashWrapper.setBackgroundColor(splashBackgroundColor);
         return this;
     }
 
     public EasySplashScreen withBackgroundResource(int resource) {
         this.splashBackgroundResource = resource;
-        splash_wrapper_rl.setBackgroundResource(splashBackgroundResource);
+        rlSplashWrapper.setBackgroundResource(splashBackgroundResource);
         return this;
     }
 
     public EasySplashScreen withTitle(int title) {
         this.mTitle = title;
-        title_iv = (ImageView) mView.findViewById(R.id.iv_title);
-        title_iv.setImageResource(mTitle);
+        ivTitle = (ImageView) mView.findViewById(R.id.iv_title);
+        ivTitle.setImageResource(mTitle);
         return this;
     }
 
     public EasySplashScreen withLogo(int logo) {
         this.mLogo = logo;
-        logo_iv = (ImageView) mView.findViewById(R.id.logo);
-        logo_iv.setImageResource(mLogo);
+        ivLogo = (ImageView) mView.findViewById(R.id.logo);
+        ivLogo.setImageResource(mLogo);
         return this;
     }
 
     public EasySplashScreen withDesc(int desc) {
         this.mDesc = desc;
-        desc_iv = (ImageView) mView.findViewById(R.id.iv_dc);
-        desc_iv.setImageResource(mDesc);
+        ivDesc = (ImageView) mView.findViewById(R.id.iv_dc);
+        ivDesc.setImageResource(mDesc);
         return this;
     }
 
     public EasySplashScreen withHeaderText(String text) {
-        this.header_text = text;
-        header_tv = (TextView) mView.findViewById(R.id.header_tv);
-        header_tv.setText(text);
+        this.textHeader = text;
+        tvHeader = (TextView) mView.findViewById(R.id.header_tv);
+        tvHeader.setText(text);
         return this;
     }
 
     public EasySplashScreen withFooterText(String text) {
-        this.footer_text = text;
-        footer_tv = (TextView) mView.findViewById(R.id.footer_tv);
-        footer_tv.setText(text);
+        this.textFooter = text;
+        tvFooter = (TextView) mView.findViewById(R.id.footer_tv);
+        tvFooter.setText(text);
         return this;
     }
 
     public EasySplashScreen withBeforeLogoText(String text) {
-        this.before_logo_text = text;
-        before_logo_tv = (TextView) mView.findViewById(R.id.before_logo_tv);
-        before_logo_tv.setText(text);
+        this.textBeforeLogo = text;
+        tvBeforeLogo = (TextView) mView.findViewById(R.id.before_logo_tv);
+        tvBeforeLogo.setText(text);
         return this;
     }
 
     public EasySplashScreen withAfterLogoText(String text) {
-        this.after_logo_text = text;
-        after_logo_tv = (TextView) mView.findViewById(R.id.after_logo_tv);
-        after_logo_tv.setText(text);
+        this.textAfterLogo = text;
+        tvAfterLogo = (TextView) mView.findViewById(R.id.after_logo_tv);
+        tvAfterLogo.setText(text);
         return this;
     }
 
     public TextView getHeaderTextView() {
-        return header_tv;
+        return tvHeader;
     }
 
     public ImageView getTitle() {
-        return title_iv;
+        return ivTitle;
     }
 
     public ImageView getLogo() {
-        return logo_iv;
+        return ivLogo;
     }
 
     public ImageView getDesc() {
-        return desc_iv;
+        return ivDesc;
     }
 
     public TextView getBeforeLogoTextView() {
-        return before_logo_tv;
+        return tvBeforeLogo;
     }
 
     public TextView getAfterLogoTextView() {
-        return after_logo_tv;
+        return tvAfterLogo;
     }
 
     public TextView getFooterTextView() {
-        return footer_tv;
+        return tvFooter;
     }
 
     public View create() {
@@ -168,11 +169,11 @@ public class EasySplashScreen {
 
 
     private void setUpHandler() {
-        if (TargetActivity != null) {
+        if (targetActivity != null) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent i = new Intent(mActivity, TargetActivity);
+                    Intent i = new Intent(mActivity, targetActivity);
                     if (bundle != null) {
                         i.putExtras(bundle);
                     }
@@ -180,7 +181,7 @@ public class EasySplashScreen {
                     // close splash
                     mActivity.finish();
                 }
-            }, SPLASH_TIME_OUT);
+            }, splashTimeOut);
         }
     }
 

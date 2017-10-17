@@ -22,11 +22,11 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Create : xpengb@outlook.com
+ * @author : xpengb@outlook.com
  * Date   : 2017/1/4
  * Version: V1.0
  * Desc   : 加强版SharePreferences工具类，可以存储Int、String、boolean、long、float、
- *          Set<String>、JSONObject、JSONArray、byte[]、Serializable、Bitmap、Drawable
+ * Set<String>、JSONObject、JSONArray、byte[]、Serializable、Bitmap、Drawable
  */
 
 public class SharePrefHelper {
@@ -36,40 +36,40 @@ public class SharePrefHelper {
     private static SharedPreferences.Editor editor;
     private static SharedPreferences preferences;
 
-    public SharePrefHelper(Context context){
+    public SharePrefHelper(Context context) {
         preferences = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         editor = preferences.edit();
     }
 
-    private static synchronized void syncInit(Context context){
-        if(instance == null){
+    private static synchronized void syncInit(Context context) {
+        if (instance == null) {
             instance = new SharePrefHelper(context);
         }
     }
 
-    public static SharePrefHelper getInstance(Context context){
-        if(instance == null){
+    public static SharePrefHelper getInstance(Context context) {
+        if (instance == null) {
             syncInit(context);
         }
         return instance;
     }
 
-    public static Map<String, ?> getAll(){
+    public static Map<String, ?> getAll() {
         return preferences.getAll();
     }
 
-    public static void release(){
-        if (instance != null){
+    public static void release() {
+        if (instance != null) {
             instance = null;
             System.gc();
         }
     }
 
-    public static boolean remove(String key){
+    public static boolean remove(String key) {
         return editor.remove(key).commit();
     }
 
-    public static boolean clear(){
+    public static boolean clear() {
         return editor.clear().commit();
     }
 
@@ -77,7 +77,7 @@ public class SharePrefHelper {
         return editor.putString(key, value).commit();
     }
 
-    public static String getString(String key){
+    public static String getString(String key) {
         return getString(key, null);
     }
 
@@ -89,7 +89,7 @@ public class SharePrefHelper {
         return editor.putBoolean(key, value).commit();
     }
 
-    public static boolean getBoolean(String key){
+    public static boolean getBoolean(String key) {
         return getBoolean(key, false);
     }
 
@@ -101,7 +101,7 @@ public class SharePrefHelper {
         return editor.putInt(key, value).commit();
     }
 
-    public static int getInt(String key){
+    public static int getInt(String key) {
         return getInt(key, -1);
     }
 
@@ -113,7 +113,7 @@ public class SharePrefHelper {
         return editor.putLong(key, value).commit();
     }
 
-    public static long getLong(String key){
+    public static long getLong(String key) {
         return getLong(key, -1L);
     }
 
@@ -125,7 +125,7 @@ public class SharePrefHelper {
         return editor.putFloat(key, value).commit();
     }
 
-    public static float getFloat(String key){
+    public static float getFloat(String key) {
         return getFloat(key, -1f);
     }
 
@@ -134,12 +134,12 @@ public class SharePrefHelper {
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static boolean put(String key, Set<String> value){
+    public static boolean put(String key, Set<String> value) {
         return editor.putStringSet(key, value).commit();
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static Set<String> getStringSet(String key){
+    public static Set<String> getStringSet(String key) {
         return getStringSet(key, null);
     }
 
@@ -150,6 +150,7 @@ public class SharePrefHelper {
 
     /**
      * 保存JSONObject数据
+     *
      * @param key
      * @param value
      */
@@ -157,9 +158,9 @@ public class SharePrefHelper {
         saveObject(key, value);
     }
 
-    public static JSONObject getJSONObject(String key){
+    public static JSONObject getJSONObject(String key) {
         Object object = readObject(key);
-        if(object instanceof JSONObject){
+        if (object instanceof JSONObject) {
             return (JSONObject) object;
         }
         return null;
@@ -177,7 +178,7 @@ public class SharePrefHelper {
         return null;
     }
 
-    public static void put(String key, byte[] value){
+    public static void put(String key, byte[] value) {
         saveObject(key, value);
     }
 
@@ -225,7 +226,7 @@ public class SharePrefHelper {
         return null;
     }
 
-    private static void saveObject(String key, Object obj){
+    private static void saveObject(String key, Object obj) {
         try {
             //先将序列化结果写到byte缓存中，其实就是分配一个内存空间
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -233,33 +234,35 @@ public class SharePrefHelper {
             //将对象序列化写入byte缓存
             os.writeObject(obj);
             //将序列化的数据转为16进制保存
-            String bytesToHexString =bytesToHexString(bos.toByteArray());
+            String bytesToHexString = bytesToHexString(bos.toByteArray());
             //保存16进制数组
             editor.putString(key, bytesToHexString);
             editor.commit();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
      * 将数组转为16进制
+     *
      * @param byteArray
      * @return
      */
-    private static String bytesToHexString(byte[] byteArray){
-        if(byteArray == null){
+    private static String bytesToHexString(byte[] byteArray) {
+        if (byteArray == null) {
             return null;
         }
-        if(byteArray.length == 0){
+        if (byteArray.length == 0) {
             return "";
         }
         StringBuffer sb = new StringBuffer(byteArray.length);
         String sTemp;
-        for(int i = 0; i<byteArray.length; i++){
+        for (int i = 0; i < byteArray.length; i++) {
             sTemp = Integer.toHexString(0xFF & byteArray[i]);
-            if(sTemp.length() < 2)
+            if (sTemp.length() < 2) {
                 sb.append(0);
+            }
             sb.append(sTemp.toUpperCase());
         }
         return sb.toString();
@@ -267,18 +270,19 @@ public class SharePrefHelper {
 
     /**
      * 获取保存的Object对象
+     *
      * @param key
      * @return
      */
-    private static Object readObject(String key){
+    private static Object readObject(String key) {
         try {
-            if(preferences.contains(key)){
-                String string= preferences.getString(key, "");
-                if (TextUtils.isEmpty(string)){
+            if (preferences.contains(key)) {
+                String string = preferences.getString(key, "");
+                if (TextUtils.isEmpty(string)) {
                     return null;
-                }else {
+                } else {
                     //将16进制的数据转为数组，准备反序列化
-                    byte[] stringToBytes = StringToBytes(string);
+                    byte[] stringToBytes = stringToBytes(string);
                     ByteArrayInputStream bis = new ByteArrayInputStream(stringToBytes);
                     ObjectInputStream is = new ObjectInputStream(bis);
                     //返回反序列化得到的对象
@@ -286,7 +290,7 @@ public class SharePrefHelper {
                     return readObject;
                 }
             }
-        }catch (StreamCorruptedException e) {
+        } catch (StreamCorruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
@@ -302,36 +306,48 @@ public class SharePrefHelper {
 
     /**
      * 将16进制的数据转为数组
+     *
      * @param data
      * @return
      */
-    private static byte[] StringToBytes(String data) {
+    private static byte[] stringToBytes(String data) {
         String hexString = data.toUpperCase().trim();
-        if (hexString.length() % 2 != 0) {
+        int number2 = 2;
+        if (hexString.length() % number2 != 0) {
             return null;
         }
         byte[] retData = new byte[hexString.length() / 2];
         for (int i = 0; i < hexString.length(); i++) {
-            int int_ch;  // 两位16进制数转化后的10进制数
-            char hex_char1 = hexString.charAt(i); ////两位16进制数中的第一位(高位*16)
-            int int_ch3;
-            if (hex_char1 >= '0' && hex_char1 <= '9')
-                int_ch3 = (hex_char1 - 48) * 16;   //// 0 的Ascll - 48
-            else if (hex_char1 >= 'A' && hex_char1 <= 'F')
-                int_ch3 = (hex_char1 - 55) * 16;//// A 的Ascll - 65
-            else
+            // 两位16进制数转化后的10进制数
+            int intCh;
+            //两位16进制数中的第一位(高位*16)
+            char hexChar1 = hexString.charAt(i);
+            int intCh3;
+            if (hexChar1 >= '0' && hexChar1 <= '9') {
+                // 0 的Ascll - 48
+                intCh3 = (hexChar1 - 48) * 16;
+            } else if (hexChar1 >= 'A' && hexChar1 <= 'F') {
+                // A 的Ascll - 65
+                intCh3 = (hexChar1 - 55) * 16;
+            } else {
                 return null;
+            }
             i++;
-            char hex_char2 = hexString.charAt(i); ///两位16进制数中的第二位(低位)
-            int int_ch4;
-            if (hex_char2 >= '0' && hex_char2 <= '9')
-                int_ch4 = (hex_char2 - 48); //// 0 的Ascll - 48
-            else if (hex_char2 >= 'A' && hex_char2 <= 'F')
-                int_ch4 = hex_char2 - 55; //// A 的Ascll - 65
-            else
+            //两位16进制数中的第二位(低位)
+            char hexChar2 = hexString.charAt(i);
+            int intCh4;
+            if (hexChar2 >= '0' && hexChar2 <= '9') {
+                // 0 的Ascll - 48
+                intCh4 = (hexChar2 - 48);
+            } else if (hexChar2 >= 'A' && hexChar2 <= 'F') {
+                // A 的Ascll - 65
+                intCh4 = hexChar2 - 55;
+            } else {
                 return null;
-            int_ch = int_ch3 + int_ch4;
-            retData[i / 2] = (byte) int_ch;//将转化后的数放入Byte里
+            }
+            intCh = intCh3 + intCh4;
+            //将转化后的数放入Byte里
+            retData[i / 2] = (byte) intCh;
         }
         return retData;
     }

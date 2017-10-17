@@ -58,7 +58,7 @@ class LayerDrawableInflateImpl implements DrawableInflateDelegate {
                 continue;
             }
 
-            if (depth > innerDepth || !parser.getName().equals("item")) {
+            if (depth > innerDepth || !"item".equals(parser.getName())) {
                 continue;
             }
 

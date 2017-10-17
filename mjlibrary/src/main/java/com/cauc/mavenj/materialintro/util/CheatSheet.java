@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.Toast;
 
 /**
+ * @author Maven Jan
  * Helper class for showing cheat sheets (tooltips) for icon-only UI elements on long-press. This is
  * already default platform behavior for icon-only {@link android.app.ActionBar} items and tabs.
  * This class provides this behavior for any other such UI element.
@@ -109,8 +110,10 @@ public class CheatSheet {
             return false;
         }
 
-        final int[] screenPos = new int[2]; // origin is device display
-        final Rect displayFrame = new Rect(); // includes decorations (e.g. status bar)
+        // origin is device display
+        final int[] screenPos = new int[2];
+        // includes decorations (e.g. status bar)
+        final Rect displayFrame = new Rect();
         view.getLocationOnScreen(screenPos);
         view.getWindowVisibleDisplayFrame(displayFrame);
 

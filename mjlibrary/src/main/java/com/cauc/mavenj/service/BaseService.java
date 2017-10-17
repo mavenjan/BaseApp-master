@@ -13,7 +13,7 @@ import com.cauc.mavenj.utils.ApplicationUtil;
 import java.io.File;
 
 /**
- * 作者 qiang_xi on 2016/10/18 11:21.
+ * @author qiang_xi on 2016/10/18 11:21.
  * 扩展用Service(一般用在非强制更新的情况下,然后使用自定义的Dialog)
  */
 

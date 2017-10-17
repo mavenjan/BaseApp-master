@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 import com.bilibili.magicasakura.utils.TintManager;
 
 /**
- * Created by feifan on 2017/4/11.
+ * @author feifan on 2017/4/11.
  * Contacts me:404619986@qq.com
  */
 public class TintConstraintLayout extends ConstraintLayout implements Tintable, AppCompatBackgroundHelper.BackgroundExtensible,

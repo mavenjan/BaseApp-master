@@ -40,23 +40,41 @@ import com.cauc.mavenj.materialintro.util.AnimUtils;
 import java.util.Arrays;
 
 /**
+ * @author Jan Maven
  * An ink inspired widget for indicating pages in a {@link ViewPager}.
  */
 public class InkPageIndicator extends View implements ViewPager.OnPageChangeListener,
         View.OnAttachStateChangeListener {
 
     // defaults
-    private static final int DEFAULT_DOT_SIZE = 8;                      // dp
-    private static final int DEFAULT_GAP = 12;                          // dp
-    private static final int DEFAULT_ANIM_DURATION = 400;               // ms
-    private static final int DEFAULT_UNSELECTED_COLOUR = 0x80ffffff;    // 50% white
-    private static final int DEFAULT_SELECTED_COLOUR = 0xffffffff;      // 100% white
+    /**
+     * dp
+     */
+    private static final int DEFAULT_DOT_SIZE = 8;
+    /**
+     * dp
+     */
+    private static final int DEFAULT_GAP = 12;
+    /**
+     * ms
+     */
+    private static final int DEFAULT_ANIM_DURATION = 400;
+    /**
+     * 50% white
+     */
+    private static final int DEFAULT_UNSELECTED_COLOUR = 0x80ffffff;
+    /**
+     * 100% white
+     */
+    private static final int DEFAULT_SELECTED_COLOUR = 0xffffffff;
 
     // constants
+
     private static final float INVALID_FRACTION = -1f;
     private static final float MINIMAL_REVEAL = 0.00001f;
 
     // configurable attributes
+
     private int dotDiameter;
     private int gap;
     private long animDuration;
@@ -64,6 +82,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     private int selectedColour;
 
     // derived from attributes
+
     private float dotRadius;
     private float halfDotRadius;
     private long animHalfDuration;
@@ -72,9 +91,11 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     private float dotBottomY;
 
     // ViewPager
+
     private ViewPager viewPager;
 
     // state
+
     private int pageCount = 0;
     private int currentPage = 0;
     private int previousPage;
@@ -89,6 +110,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     private boolean pageChanging;
 
     // drawing
+
     private final Paint unselectedPaint;
     private final Paint selectedPaint;
     private final Path combinedUnselectedPath;
@@ -102,6 +124,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     private final Interpolator interpolator;
 
     // working values for beziers
+
     float endX1;
     float endY1;
     float endX2;
@@ -199,16 +222,17 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         if (isAttachedToWindow) {
             float fraction = positionOffset;
+            float one = 1f;
             int currentPosition = pageChanging ? previousPage : currentPage;
             int leftDotPosition = position;
             // when swiping from #2 to #1 ViewPager reports position as 1 and a descending offset
             // need to convert this into our left-dot-based 'coordinate space'
             if (currentPosition != position) {
-                fraction = 1f - positionOffset;
+                fraction = one - positionOffset;
 
                 // if user scrolls completely to next page then the position param updates to that
                 // new page but we're not ready to switch our 'current' page yet so adjust for that
-                if (fraction == 1f) {
+                if (fraction == one) {
                     leftDotPosition = Math.min(currentPosition, position);
                 }
             }
@@ -239,13 +263,15 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         requestLayout();
     }
 
+    @Override
     protected void onSizeChanged(int w, int h, int oldW, int oldH) {
         calculateDotPositions(w, h);
     }
 
     private void calculateDotPositions(int width, int height) {
-        if (!measured)
+        if (!measured) {
             return;
+        }
 
         int left = getPaddingLeft();
         int top = getPaddingTop();
@@ -275,8 +301,9 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         } else {
             currentPage = 0;
         }
-        if (dotCenterX != null)
+        if (dotCenterX != null) {
             selectedDotX = dotCenterX[Math.max(0, Math.min(currentPage, dotCenterX.length - 1))];
+        }
     }
 
     private void resetState() {
@@ -351,7 +378,9 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (viewPager == null || pageCount == 0) return;
+        if (viewPager == null || pageCount == 0) {
+            return;
+        }
         drawUnselected(canvas);
         drawSelected(canvas);
     }
@@ -409,17 +438,20 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                                    float joiningFraction,
                                    float dotRevealFraction) {
 
+        float zero = 0f;
+        float oneHalf = 0.5f;
+        float one = 1f;
+
         unselectedDotPath.rewind();
-
-        if ((joiningFraction == 0f || joiningFraction == INVALID_FRACTION)
-                && dotRevealFraction == 0f
-                && !(page == currentPage && selectedDotInPosition)) {
-
+        boolean isTrue = (joiningFraction == zero || joiningFraction == INVALID_FRACTION)
+                && dotRevealFraction == zero
+                && !(page == currentPage && selectedDotInPosition);
+        if (isTrue) {
             // case #1 – At rest
             unselectedDotPath.addCircle(dotCenterX[page], dotCenterY, dotRadius, Path.Direction.CW);
         }
 
-        if (joiningFraction > 0f && joiningFraction <= 0.5f
+        if (joiningFraction > zero && joiningFraction <= oneHalf
                 && retreatingJoinX1 == INVALID_FRACTION) {
 
             // case #2 – Joining neighbour, still separate
@@ -500,7 +532,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             }
         }
 
-        if (joiningFraction > 0.5f && joiningFraction < 1f
+        if (joiningFraction > oneHalf && joiningFraction < one
                 && retreatingJoinX1 == INVALID_FRACTION) {
 
             // case #3 – Joining neighbour, combined curved
@@ -600,7 +632,9 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     private void setSelectedPage(int now) {
         now = Math.min(now, pageCount - 1);
 
-        if (now == currentPage) return;
+        if (now == currentPage) {
+            return;
+        }
 
         pageChanging = true;
         previousPage = currentPage;
@@ -623,8 +657,10 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         // retreat animations when it has moved 75% of the way.
         // The retreat animation in turn will kick of reveal anims when the
         // retreat has passed any dots to be revealed
-        if (getVisibility() == VISIBLE)
-            createMoveSelectedAnimator(dotCenterX[now], previousPage, now, steps).start(); // dotCenterX is null when getVisibility() != VISIBLE
+        if (getVisibility() == VISIBLE) {
+            // dotCenterX is null when getVisibility() != VISIBLE
+            createMoveSelectedAnimator(dotCenterX[now], previousPage, now, steps).start();
+        }
     }
 
     private ValueAnimator createMoveSelectedAnimator(
@@ -713,12 +749,12 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     /**
      * A {@link ValueAnimator} that starts once a given predicate returns true.
      */
-    public abstract class PendingStartAnimator extends ValueAnimator {
+    abstract class AbstractPendingStartAnimator extends ValueAnimator {
 
         protected boolean hasStarted;
-        protected StartPredicate predicate;
+        protected AbstractStartPredicate predicate;
 
-        public PendingStartAnimator(StartPredicate predicate) {
+        public AbstractPendingStartAnimator(AbstractStartPredicate predicate) {
             super();
             this.predicate = predicate;
             hasStarted = false;
@@ -737,9 +773,9 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
      * selected pages.  This also sets up some pending dot reveals – to be started when the retreat
      * has passed the dot to be revealed.
      */
-    public class PendingRetreatAnimator extends PendingStartAnimator {
+    public class PendingRetreatAnimator extends AbstractPendingStartAnimator {
 
-        public PendingRetreatAnimator(int was, int now, int steps, StartPredicate predicate) {
+        public PendingRetreatAnimator(int was, int now, int steps, AbstractStartPredicate predicate) {
             super(predicate);
             setDuration(animHalfDuration);
             setInterpolator(interpolator);
@@ -761,7 +797,8 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             // we can initialize their revealFraction's i.e. make sure they're hidden while the
             // reveal animation runs
             final int[] dotsToHide = new int[steps];
-            if (initialX1 != finalX1) { // rightward retreat
+            // rightward retreat
+            if (initialX1 != finalX1) {
                 setFloatValues(initialX1, finalX1);
                 // create the reveal animations that will run when the retreat passes them
                 for (int i = 0; i < steps; i++) {
@@ -843,11 +880,11 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     /**
      * An Animator that animates a given dot's revealFraction i.e. scales it up
      */
-    public class PendingRevealAnimator extends PendingStartAnimator {
+    public class PendingRevealAnimator extends AbstractPendingStartAnimator {
 
         private int dot;
 
-        public PendingRevealAnimator(int dot, StartPredicate predicate) {
+        public PendingRevealAnimator(int dot, AbstractStartPredicate predicate) {
             super(predicate);
             setFloatValues(MINIMAL_REVEAL, 1f);
             this.dot = dot;
@@ -877,14 +914,19 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     /**
      * A predicate used to start an animation when a test passes
      */
-    public abstract class StartPredicate {
+    abstract class AbstractStartPredicate {
 
         protected float thresholdValue;
 
-        public StartPredicate(float thresholdValue) {
+        public AbstractStartPredicate(float thresholdValue) {
             this.thresholdValue = thresholdValue;
         }
 
+        /**
+         * shouldStart
+         * @param currentValue
+         * @return
+         */
         abstract boolean shouldStart(float currentValue);
 
     }
@@ -892,12 +934,13 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     /**
      * A predicate used to start an animation when a given value is greater than a threshold
      */
-    public class RightwardStartPredicate extends StartPredicate {
+    public class RightwardStartPredicate extends AbstractStartPredicate {
 
         public RightwardStartPredicate(float thresholdValue) {
             super(thresholdValue);
         }
 
+        @Override
         boolean shouldStart(float currentValue) {
             return currentValue > thresholdValue;
         }
@@ -906,12 +949,13 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     /**
      * A predicate used to start an animation then a given value is less than a threshold
      */
-    public class LeftwardStartPredicate extends StartPredicate {
+    public class LeftwardStartPredicate extends AbstractStartPredicate {
 
         public LeftwardStartPredicate(float thresholdValue) {
             super(thresholdValue);
         }
 
+        @Override
         boolean shouldStart(float currentValue) {
             return currentValue < thresholdValue;
         }

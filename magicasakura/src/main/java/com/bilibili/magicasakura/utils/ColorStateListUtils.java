@@ -40,7 +40,9 @@ import java.util.LinkedList;
 public class ColorStateListUtils {
 
     static ColorStateList createColorStateList(Context context, int resId) {
-        if (resId <= 0) return null;
+        if (resId <= 0) {
+            return null;
+        }
 
         TypedValue value = new TypedValue();
         context.getResources().getValue(resId, value, true);
@@ -53,8 +55,9 @@ public class ColorStateListUtils {
             cl = ColorStateList.valueOf(ThemeUtils.replaceColorById(context, value.resourceId));
         } else {
             final String file = value.string.toString();
+            String endTag = "xml";
             try {
-                if (file.endsWith("xml")) {
+                if (file.endsWith(endTag)) {
                     final XmlResourceParser rp = context.getResources().getAssets().openXmlResourceParser(
                             value.assetCookie, file);
                     final AttributeSet attrs = Xml.asAttributeSet(rp);
@@ -84,7 +87,8 @@ public class ColorStateListUtils {
     static ColorStateList createFromXmlInner(Context context, XmlPullParser parser, AttributeSet attrs) throws IOException, XmlPullParserException {
 
         final String name = parser.getName();
-        if (!name.equals("selector")) {
+        String selector = "selector";
+        if (!selector.equals(name)) {
             throw new XmlPullParserException(
                     parser.getPositionDescription() + ": invalid color state list tag " + name);
         }
@@ -103,7 +107,7 @@ public class ColorStateListUtils {
         while ((type = parser.next()) != XmlPullParser.END_DOCUMENT
                 && ((depth = parser.getDepth()) >= innerDepth || type != XmlPullParser.END_TAG)) {
             if (type != XmlPullParser.START_TAG || depth > innerDepth
-                    || !parser.getName().equals("item")) {
+                    || !"item".equals(parser.getName())) {
                 continue;
             }
 
@@ -141,6 +145,7 @@ public class ColorStateListUtils {
                 case 0:
                     break;
                 case android.R.attr.color:
+                    break;
                 case android.R.attr.alpha:
                     // Ignore attributes from StateListDrawableItem and
                     // AnimatedStateListDrawableItem.
@@ -148,6 +153,7 @@ public class ColorStateListUtils {
                 default:
                     states[j++] = attrs.getAttributeBooleanValue(i, false)
                             ? stateResId : -stateResId;
+                    break;
             }
         }
         states = StateSet.trimStateSet(states, j);

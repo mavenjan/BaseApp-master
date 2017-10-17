@@ -22,6 +22,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.util.SparseArray;
 
 /**
+ * @author
  * This is an extension to {@link StateListDrawable} that workaround a bug not allowing
  * to set a {@link ColorFilter} to the drawable in one of the states., it add a method
  * {@link #addState(int[], Drawable, ColorFilter)} for that purpose.

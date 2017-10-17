@@ -20,6 +20,12 @@ import android.view.View;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.view.ViewHelper;
 
+/**
+ * @author Maven Jan
+ * @time
+ * @describe 描述
+ */
+
 public class Flip extends BaseEffect {
     long s = mDuration,
          e =mDuration;

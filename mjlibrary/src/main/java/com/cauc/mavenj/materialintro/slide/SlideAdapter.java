@@ -38,6 +38,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @author Maven Jan
+ * @time
+ * @describe 描述
+ */
+
 public class SlideAdapter extends FragmentPagerAdapter {
     private List<Slide> data = new ArrayList<>();
     private FragmentManager fragmentManager;
@@ -160,8 +166,9 @@ public class SlideAdapter extends FragmentPagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         Fragment fragment = (Fragment) object;
-        if (fragment == null)
+        if (fragment == null) {
             return;
+        }
         super.destroyItem(container, position, object);
     }
 

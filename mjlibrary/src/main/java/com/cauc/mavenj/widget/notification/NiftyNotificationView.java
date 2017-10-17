@@ -27,6 +27,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+/**
+ * @author Maven Jan
+ * @time
+ * @describe 描述
+ */
+
 public class NiftyNotificationView {
 
     private static final String NULL_PARAMETERS_ARE_NOT_ACCEPTED = "Null parameters are not accepted";
@@ -299,7 +305,10 @@ public class NiftyNotificationView {
 
         Manager.getInstance().addSticky(this);
     }
-    //only remove sticky notification
+
+    /**
+     * only remove sticky notification
+     */
     public void removeSticky(){
         Manager.getInstance().removeSticky();
     }

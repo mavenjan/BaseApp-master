@@ -35,7 +35,8 @@ import com.bilibili.magicasakura.utils.TintManager;
  * @author xyczero617@gmail.com
  * @time 16/4/7
  */
-public class AppCompatForegroundHelper extends AppCompatBaseHelper {
+public class AppCompatForegroundHelper extends BaseAppCompatHelper {
+    private int number2 = 2;
     private static final int[] ATTR = {
             android.R.attr.foreground,
             R.attr.foregroundTint,
@@ -57,7 +58,7 @@ public class AppCompatForegroundHelper extends AppCompatBaseHelper {
         TypedArray array = mView.getContext().obtainStyledAttributes(attrs, ATTR, defStyleAttr, 0);
         if (array.hasValue(1)) {
             mForegroundResId = array.getResourceId(1, 0);
-            if (array.hasValue(2)) {
+            if (array.hasValue(number2)) {
                 setSupportForegroundTintMode(DrawableUtils.parseTintMode(array.getInt(2, 0), null));
             }
             setSupportForegroundTint(mForegroundTintResId);
@@ -76,7 +77,10 @@ public class AppCompatForegroundHelper extends AppCompatBaseHelper {
      * @param foreground
      */
     public void setForegroundDrawableExternal(Drawable foreground) {
-        if (skipNextApply()) return;
+        if (skipNextApply()) {
+            return;
+        }
+
 
         resetTintResource(0);
         setSkipNextApply(false);
@@ -110,8 +114,9 @@ public class AppCompatForegroundHelper extends AppCompatBaseHelper {
      * Internal use
      */
     private void setForegroundDrawable(Drawable drawable) {
-        if (skipNextApply()) return;
-
+        if (skipNextApply()) {
+            return;
+        }
         setForeground(drawable);
     }
 
@@ -197,8 +202,19 @@ public class AppCompatForegroundHelper extends AppCompatBaseHelper {
     }
 
     public interface ForegroundExtensible {
+        /**
+         * 闪屏背景
+         *
+         * @param resId
+         */
         void setForegroundTintList(int resId);
 
+        /**
+         * 闪屏背景
+         *
+         * @param resId
+         * @param mode
+         */
         void setForegroundTintList(int resId, PorterDuff.Mode mode);
     }
 }

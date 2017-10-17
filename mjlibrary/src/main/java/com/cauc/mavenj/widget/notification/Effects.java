@@ -10,7 +10,8 @@ import com.cauc.mavenj.widget.notification.effects.SlideOnTop;
 import com.cauc.mavenj.widget.notification.effects.Standard;
 import com.cauc.mavenj.widget.notification.effects.ThumbSlider;
 
-/*
+/**
+ * @author gitonway
  * Copyright 2014 gitonway
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,6 +27,9 @@ import com.cauc.mavenj.widget.notification.effects.ThumbSlider;
  * limitations under the License.
  */
 public enum Effects {
+    /**
+     * standard standard
+     */
     standard(Standard.class),
     slideOnTop(SlideOnTop.class),
     flip(Flip.class),

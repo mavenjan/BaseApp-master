@@ -33,6 +33,12 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
+/**
+ * @author Maven Jan
+ * @time
+ * @describe 描述
+ */
+
 public class FadeableViewPager extends SwipeBlockableViewPager {
 
     public FadeableViewPager(Context context) {
@@ -144,21 +150,24 @@ public class FadeableViewPager extends SwipeBlockableViewPager {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            if (position < adapter.getCount())
+            if (position < adapter.getCount()) {
                 return adapter.instantiateItem(container, position);
+            }
             return null;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            if (position < adapter.getCount())
+            if (position < adapter.getCount()) {
                 adapter.destroyItem(container, position, object);
+            }
         }
 
         @Override
         public void setPrimaryItem(ViewGroup container, int position, Object object) {
-            if (position < adapter.getCount())
+            if (position < adapter.getCount()) {
                 adapter.setPrimaryItem(container, position, object);
+            }
         }
 
         @Override
@@ -177,8 +186,9 @@ public class FadeableViewPager extends SwipeBlockableViewPager {
         @Deprecated
         @Override
         public Object instantiateItem(View container, int position) {
-            if (position < adapter.getCount())
+            if (position < adapter.getCount()) {
                 return adapter.instantiateItem(container, position);
+            }
             return null;
         }
 
@@ -186,16 +196,18 @@ public class FadeableViewPager extends SwipeBlockableViewPager {
         @Deprecated
         @Override
         public void destroyItem(View container, int position, Object object) {
-            if (position < adapter.getCount())
+            if (position < adapter.getCount()) {
                 adapter.destroyItem(container, position, object);
+            }
         }
 
         @SuppressWarnings("deprecation")
         @Deprecated
         @Override
         public void setPrimaryItem(View container, int position, Object object) {
-            if (position < adapter.getCount())
+            if (position < adapter.getCount()) {
                 adapter.setPrimaryItem(container, position, object);
+            }
         }
 
         @SuppressWarnings("deprecation")
@@ -218,7 +230,9 @@ public class FadeableViewPager extends SwipeBlockableViewPager {
         @Override
         public int getItemPosition(Object object) {
             int position = adapter.getItemPosition(object);
-            if (position < adapter.getCount()) return position;
+            if (position < adapter.getCount()) {
+                return position;
+            }
             return POSITION_NONE;
         }
 
@@ -234,15 +248,17 @@ public class FadeableViewPager extends SwipeBlockableViewPager {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            if (position < adapter.getCount())
+            if (position < adapter.getCount()) {
                 return adapter.getPageTitle(position);
+            }
             return null;
         }
 
         @Override
         public float getPageWidth(int position) {
-            if (position < adapter.getCount())
+            if (position < adapter.getCount()) {
                 return adapter.getPageWidth(position);
+            }
             return 1f;
         }
     }

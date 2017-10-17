@@ -10,7 +10,7 @@ import com.cauc.mavenj.utils.NotificationUtil;
 import java.io.File;
 
 /**
- * Created by qiang_xi on 2016/10/7 13:56.
+ * @author qiang_xi on 2016/10/7 13:56.
  * 后台下载服务
  */
 

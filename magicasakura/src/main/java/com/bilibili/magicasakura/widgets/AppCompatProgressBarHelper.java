@@ -21,6 +21,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -34,8 +35,8 @@ import com.bilibili.magicasakura.utils.TintManager;
  * @author xyczero617@gmail.com
  * @time 16/2/4
  */
-public class AppCompatProgressBarHelper extends AppCompatBaseHelper {
-    private static final int ATTR[] = new int[]{
+public class AppCompatProgressBarHelper extends BaseAppCompatHelper {
+    private static final int[] ATTR= new int[]{
             R.attr.progressTint,
             R.attr.progressIndeterminateTint
     };
@@ -88,8 +89,8 @@ public class AppCompatProgressBarHelper extends AppCompatBaseHelper {
     }
 
     private void applySupportProgressTint() {
-        if (mProgressTintInfo != null
-                && (mProgressTintInfo.mHasTintList || mProgressTintInfo.mHasTintMode)) {
+        boolean haseTint = mProgressTintInfo != null && (mProgressTintInfo.mHasTintList || mProgressTintInfo.mHasTintMode);
+        if (haseTint) {
             final Drawable target = getTintTarget(android.R.id.progress, true);
             if (target != null) {
                 TintManager.tintViewDrawable(mView, target, mProgressTintInfo);
@@ -141,10 +142,10 @@ public class AppCompatProgressBarHelper extends AppCompatBaseHelper {
     @Override
     public void tint() {
         if (mProgressTintResId != 0) {
-            setSupportProgressTint(mView.getResources().getColorStateList(mProgressTintResId));
+            setSupportProgressTint(ContextCompat.getColorStateList(mView.getContext(),mProgressTintResId));
         }
         if (mIndeterminateTintResId != 0) {
-            setSupportIndeterminateTint(mView.getResources().getColorStateList(mIndeterminateTintResId));
+            setSupportIndeterminateTint(ContextCompat.getColorStateList(mView.getContext(),mIndeterminateTintResId));
         }
     }
 }

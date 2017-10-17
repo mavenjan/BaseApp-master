@@ -18,7 +18,7 @@ import java.math.BigInteger;
 import java.util.Locale;
 
 /**
- * Created by daimajia on 14-4-30.
+ * @author daimajia on 14-4-30.
  */
 public class NumberProgressBar extends View {
 
@@ -159,6 +159,9 @@ public class NumberProgressBar extends View {
     private OnProgressBarListener mListener;
 
     public enum ProgressTextVisibility {
+        /**
+         * Visible visible
+         */
         Visible, Invisible
     }
 
@@ -255,8 +258,9 @@ public class NumberProgressBar extends View {
             canvas.drawRect(mUnreachedRectF, mUnreachedBarPaint);
         }
 
-        if (mIfDrawText)
+        if (mIfDrawText) {
             canvas.drawText(mCurrentDrawText, mDrawTextStart, mDrawTextEnd, mTextPaint);
+        }
     }
 
     private void initializePainters() {
@@ -415,9 +419,9 @@ public class NumberProgressBar extends View {
     }
 
     public void setPrefix(String prefix) {
-        if (prefix == null)
+        if (prefix == null) {
             mPrefix = "";
-        else {
+        } else {
             mPrefix = prefix;
         }
     }
@@ -508,6 +512,11 @@ public class NumberProgressBar extends View {
 
     public interface OnProgressBarListener {
 
+        /**
+         * onProgressChange
+         * @param current
+         * @param max
+         */
         void onProgressChange(int current, int max);
     }
 

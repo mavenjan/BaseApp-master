@@ -26,6 +26,16 @@ package com.cauc.mavenj.materialintro.slide;
 
 import android.support.v4.app.Fragment;
 
+/**
+ * @author Maven Jan
+ * @time
+ * @describe 描述
+ */
+
 public interface RestorableSlide extends Slide {
+    /**
+     * setFragment
+     * @param fragment
+     */
     void setFragment(Fragment fragment);
 }

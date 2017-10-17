@@ -1,5 +1,7 @@
 package com.cauc.mavenj.widget.notification;
 /*
+ *
+ * @author
  * Copyright 2014 gitonway
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,11 +19,15 @@ package com.cauc.mavenj.widget.notification;
 
 import android.view.Gravity;
 
+/**
+ * @author Maven Jan
+ */
+
 public class Configuration {
 
     public static final int ANIM_DURATION= 700;
 
-    public static final int ANIM_DISPLAY_DURATION= 1500;
+    private static final int ANIM_DISPLAY_DURATION= 1500;
 
     final long animDuration;
 

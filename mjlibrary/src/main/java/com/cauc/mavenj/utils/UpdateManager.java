@@ -7,8 +7,8 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.cauc.mavenj.app.Constant;
-import com.cauc.mavenj.callback.JsonCallback;
 import com.cauc.mavenj.dialog.ForceUpdateDialog;
+import com.cauc.mavenj.dialog.BaseJsonCallback;
 import com.cauc.mavenj.model.CheckUpdateInfo;
 import com.cauc.mavenj.model.LzyResponse;
 import com.lzy.okgo.OkGo;
@@ -23,7 +23,7 @@ import okhttp3.Call;
 import okhttp3.Headers;
 
 /**
- * Created by Maven on 2017/4/10.
+ * @author Maven on 2017/4/10.
  * Email: cyjiang_11@163.com
  * Description:版本更新工具类
  */
@@ -32,7 +32,10 @@ public class UpdateManager {
     private static final String TAG = "UpdateManager";
     private static Context mContext;
     private static String updatecontent;
-    private static int opreate = 0;//0监测 1更新
+    /**
+     * 0监测, 1更新
+     */
+    private static int opreate = 0;
     private static int versioncode;
     private static boolean isauto;
 
@@ -40,12 +43,12 @@ public class UpdateManager {
     private static CheckUpdateInfo mCheckUpdateInfo;
 
     public UpdateManager(Context context) {
-        this.mContext = context;
+        mContext = context;
     }
 
     public UpdateManager(Context context, boolean auto) {
-        this.mContext = context;
-        this.isauto = auto;
+        mContext = context;
+        isauto = auto;
     }
 
     public void checkUpdate() {
@@ -53,9 +56,9 @@ public class UpdateManager {
         final int code = ApplicationUtil.getVersionCode(mContext);
         OkGo.<LzyResponse<CheckUpdateInfo>>get(Constant.APP_VERSION_URL)
                 .tag(mContext)
-                .headers("header1", "headerValue1")//
-                .params("param1", "paramValue1")//
-                .execute(new JsonCallback<LzyResponse<CheckUpdateInfo>>() {
+                .headers("header1", "headerValue1")
+                .params("param1", "paramValue1")
+                .execute(new BaseJsonCallback<LzyResponse<CheckUpdateInfo>>() {
                     @Override
                     public void onSuccess(Response<LzyResponse<CheckUpdateInfo>> response) {
                         handleResponse(response);

@@ -26,8 +26,26 @@ package com.cauc.mavenj.materialintro.slide;
 
 import android.view.View;
 
+/**
+ * @author Maven Jan
+ * @time
+ * @describe 描述
+ */
+
 public interface SimpleSlideActivity {
+    /**
+     * onSlideViewCreated
+     * @param fragment
+     * @param view
+     * @param id
+     */
     void onSlideViewCreated(SimpleSlide.SimpleSlideFragment fragment, View view, long id);
 
+    /**
+     * onSlideDestroyView
+     * @param fragment
+     * @param view
+     * @param id
+     */
     void onSlideDestroyView(SimpleSlide.SimpleSlideFragment fragment, View view, long id);
 }

@@ -26,24 +26,39 @@ import java.net.URLConnection;
 import java.util.Map;
 
 /**
- * Created by qiang_xi on 2016/10/9 20:36.
+ * @author qiang_xi on 2016/10/9 20:36.
  * 网络请求类
  */
 
 public class HttpRequest {
-    private static final int hasUpdate = 0;
-    private static final int noUpdate = 1;
-    private static final int downloadSuccess = 2;
-    private static final int downloading = 3;
-    private static final int downloadFailure = 4;
-    private static final int checkSuccess = 5;
-    private static final int checkUpdateFailure = -1;
+    private static final int HASE_UPDATE = 0;
+    private static final int NO_UPDATE = 1;
+    private static final int DOWNLOAD_SUCCESS = 2;
+    private static final int DOWNLOADING = 3;
+    private static final int DOWNLOAD_FAILURE = 4;
+    private static final int CHECK_SUCCESS = 5;
+    private static final int CHECK_UPDATE_FAILURE = -1;
 
-    private final static int CONNECTION_TIME_OUT = 10000;//连接超时时间
-    private final static int READ_TIME_OUT = 10000;//读取超时时间
-    private static CheckUpdateCallback updateCallback;//检查更新回调
-    private static CheckUpdateCallback2 updateCallback2;//检查更新回调2
-    private static DownloadCallback downloadCallback;//下载回调
+    /**
+     * 连接超时时间
+     */
+    private final static int CONNECTION_TIME_OUT = 10000;
+    /**
+     * 读取超时时间
+     */
+    private final static int READ_TIME_OUT = 10000;
+    /**
+     * 检查更新回调
+     */
+    private static CheckUpdateCallback updateCallback;
+    /**
+     * 检查更新回调2
+     */
+    private static CheckUpdateCallback2 updateCallback2;
+    /**
+     * 下载回调
+     */
+    private static DownloadCallback downloadCallback;
     private static long timestamp;
 
     private static Handler handler = new Handler() {
@@ -52,19 +67,19 @@ public class HttpRequest {
             Bundle data = msg.getData();
             switch (msg.what) {
                 //检查更新成功
-                case checkSuccess:
+                case CHECK_SUCCESS:
                     updateCallback2.onCheckUpdateSuccess((String) msg.obj);
                     break;
                 //有更新
-                case hasUpdate:
+                case HASE_UPDATE:
                     updateCallback.onCheckUpdateSuccess((String) msg.obj, true);
                     break;
                 //无更新
-                case noUpdate:
+                case NO_UPDATE:
                     updateCallback.onCheckUpdateSuccess((String) msg.obj, false);
                     break;
                 //检查更新失败
-                case checkUpdateFailure:
+                case CHECK_UPDATE_FAILURE:
                     if (null != updateCallback) {
                         updateCallback.onCheckUpdateFailure((String) msg.obj, -1);
                     }
@@ -73,16 +88,18 @@ public class HttpRequest {
                     }
                     break;
                 //apk文件下载中,1s回调一次
-                case downloading:
+                case DOWNLOADING:
                     downloadCallback.onProgress(data.getLong("currentLength"), data.getLong("fileLength"));
                     break;
                 //apk文件下载成功
-                case downloadSuccess:
+                case DOWNLOAD_SUCCESS:
                     downloadCallback.onDownloadSuccess((File) data.getSerializable("file"));
                     break;
                 //apk文件下载失败
-                case downloadFailure:
+                case DOWNLOAD_FAILURE:
                     downloadCallback.onDownloadFailure((String) msg.obj);
+                    break;
+                default:
                     break;
             }
         }
@@ -143,8 +160,9 @@ public class HttpRequest {
                     inputStream = httpURLConnection.getInputStream();
                     //若不ok,则数据请求失败
                     if (HttpURLConnection.HTTP_OK != httpURLConnection.getResponseCode()) {
-                        message.obj = "错误码: " + httpURLConnection.getResponseCode();//把响应码返回
-                        message.what = checkUpdateFailure;
+                        //把响应码返回
+                        message.obj = "错误码: " + httpURLConnection.getResponseCode();
+                        message.what = CHECK_UPDATE_FAILURE;
                         handler.sendMessage(message);
                         return;
                     }
@@ -160,17 +178,17 @@ public class HttpRequest {
                     message.obj = json;
                     //有更新
                     if (newAppVersionCode > currentVersionCode) {
-                        message.what = hasUpdate;
+                        message.what = HASE_UPDATE;
                         handler.sendMessage(message);
                     }
                     //无更新
                     else {
-                        message.what = noUpdate;
+                        message.what = NO_UPDATE;
                         handler.sendMessage(message);
                     }
                 } catch (Exception e) {
                     message.obj = e.toString();
-                    message.what = checkUpdateFailure;
+                    message.what = CHECK_UPDATE_FAILURE;
                     handler.sendMessage(message);
                 } finally {
                     try {
@@ -244,8 +262,9 @@ public class HttpRequest {
                     inputStream = httpURLConnection.getInputStream();
                     //若不ok,则数据请求失败
                     if (HttpURLConnection.HTTP_OK != httpURLConnection.getResponseCode()) {
-                        message.obj = "错误码: " + httpURLConnection.getResponseCode();//把响应码返回
-                        message.what = checkUpdateFailure;
+                        //把响应码返回
+                        message.obj = "错误码: " + httpURLConnection.getResponseCode();
+                        message.what = CHECK_UPDATE_FAILURE;
                         handler.sendMessage(message);
                         return;
                     }
@@ -256,11 +275,11 @@ public class HttpRequest {
                         sb.append(line);
                     }
                     message.obj = sb.toString();
-                    message.what = checkSuccess;
+                    message.what = CHECK_SUCCESS;
                     handler.sendMessage(message);
                 } catch (Exception e) {
                     message.obj = e.toString();
-                    message.what = checkUpdateFailure;
+                    message.what = CHECK_UPDATE_FAILURE;
                     handler.sendMessage(message);
                 } finally {
                     try {
@@ -333,8 +352,9 @@ public class HttpRequest {
                     inputStream = httpURLConnection.getInputStream();
                     //若不ok,则数据请求失败
                     if (HttpURLConnection.HTTP_OK != httpURLConnection.getResponseCode()) {
-                        message.obj = "错误码: " + httpURLConnection.getResponseCode();//把响应码返回
-                        message.what = checkUpdateFailure;
+                        //把响应码返回
+                        message.obj = "错误码: " + httpURLConnection.getResponseCode();
+                        message.what = CHECK_UPDATE_FAILURE;
                         handler.sendMessage(message);
                         return;
                     }
@@ -349,17 +369,17 @@ public class HttpRequest {
                     message.obj = json;
                     //有更新
                     if (newAppVersionCode > currentVersionCode) {
-                        message.what = hasUpdate;
+                        message.what = HASE_UPDATE;
                         handler.sendMessage(message);
                     }
                     //无更新
                     else {
-                        message.what = noUpdate;
+                        message.what = NO_UPDATE;
                         handler.sendMessage(message);
                     }
                 } catch (Exception e) {
                     message.obj = e.toString();
-                    message.what = checkUpdateFailure;
+                    message.what = CHECK_UPDATE_FAILURE;
                     handler.sendMessage(message);
                 } finally {
                     try {
@@ -430,8 +450,9 @@ public class HttpRequest {
                     inputStream = httpURLConnection.getInputStream();
                     //若不ok,则数据请求失败
                     if (HttpURLConnection.HTTP_OK != httpURLConnection.getResponseCode()) {
-                        message.obj = "错误码: " + httpURLConnection.getResponseCode();//把响应码返回
-                        message.what = checkUpdateFailure;
+                        //把响应码返回
+                        message.obj = "错误码: " + httpURLConnection.getResponseCode();
+                        message.what = CHECK_UPDATE_FAILURE;
                         handler.sendMessage(message);
                         return;
                     }
@@ -441,11 +462,11 @@ public class HttpRequest {
                         sb.append(tempLine);
                     }
                     message.obj = sb.toString();
-                    message.what = checkSuccess;
+                    message.what = CHECK_SUCCESS;
                     handler.sendMessage(message);
                 } catch (Exception e) {
                     message.obj = e.toString();
-                    message.what = checkUpdateFailure;
+                    message.what = CHECK_UPDATE_FAILURE;
                     handler.sendMessage(message);
                 } finally {
                     try {
@@ -491,7 +512,7 @@ public class HttpRequest {
                     connection.connect();
                     if (HttpURLConnection.HTTP_OK != connection.getResponseCode()) {
                         Message message1 = new Message();
-                        message1.what = downloadFailure;
+                        message1.what = DOWNLOAD_FAILURE;
                         message1.obj = "错误码: " + connection.getResponseCode();
                         handler.sendMessage(message1);
                         return;
@@ -509,7 +530,7 @@ public class HttpRequest {
                         file.delete();
                     }
                     output = new FileOutputStream(file);
-                    byte data[] = new byte[4096];
+                    byte[] data = new byte[4096];
                     //当前下载进度
                     int current = 0;
                     int count;
@@ -528,7 +549,7 @@ public class HttpRequest {
                             }
                             timestamp = System.currentTimeMillis();
                             Message message = Message.obtain();
-                            message.what = downloading;
+                            message.what = DOWNLOADING;
                             bundle.putLong("currentLength", current);
                             bundle.putLong("fileLength", fileLength);
                             message.setData(bundle);
@@ -536,23 +557,26 @@ public class HttpRequest {
                         }
                     }
                     Message message = new Message();
-                    message.what = downloadSuccess;
+                    message.what = DOWNLOAD_SUCCESS;
                     bundle.putSerializable("file", file);
                     message.setData(bundle);
                     handler.sendMessage(message);
                 } catch (Exception e) {
                     Message message = new Message();
-                    message.what = downloadFailure;
+                    message.what = DOWNLOAD_FAILURE;
                     message.obj = e.toString();
                     handler.sendMessage(message);
                 } finally {
                     try {
-                        if (output != null)
+                        if (output != null) {
                             output.close();
-                        if (input != null)
+                        }
+                        if (input != null) {
                             input.close();
-                        if (connection != null)
+                        }
+                        if (connection != null) {
                             connection.disconnect();
+                        }
                     } catch (IOException ignored) {
                     }
                 }

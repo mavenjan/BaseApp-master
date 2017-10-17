@@ -53,9 +53,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @author Maven Jan
+ * @time
+ * @describe 描述
+ */
+
 public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
 
-    private static final int DEFAULT_PERMISSIONS_REQUEST_CODE = 34; //Random number
+    /**
+     * Random number
+     */
+    private static final int DEFAULT_PERMISSIONS_REQUEST_CODE = 34;
     private SimpleSlideFragment fragment;
 
     private final long id;
@@ -114,8 +123,9 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
 
     @Override
     public void setFragment(Fragment fragment) {
-        if (fragment instanceof SimpleSlideFragment)
+        if (fragment instanceof SimpleSlideFragment) {
             this.fragment = (SimpleSlideFragment) fragment;
+        }
     }
 
     @Override
@@ -149,9 +159,10 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (fragment.getActivity() != null)
+                if (fragment.getActivity() != null) {
                     ActivityCompat.requestPermissions(fragment.getActivity(), permissions,
                             permissionsRequestCode);
+                }
             }
         };
     }
@@ -163,9 +174,10 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             return buttonCtaLabel;
         }
         Context context = fragment.getContext();
-        if (context != null)
+        if (context != null) {
             return context.getResources().getQuantityText(
                     R.plurals.mi_label_grant_permission, permissions.length);
+        }
         return null;
     }
 
@@ -202,30 +214,63 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         SimpleSlide that = (SimpleSlide) o;
 
-        if (id != that.id) return false;
-        if (titleRes != that.titleRes) return false;
-        if (descriptionRes != that.descriptionRes) return false;
-        if (imageRes != that.imageRes) return false;
-        if (layoutRes != that.layoutRes) return false;
-        if (backgroundRes != that.backgroundRes) return false;
-        if (backgroundDarkRes != that.backgroundDarkRes) return false;
-        if (canGoForward != that.canGoForward) return false;
-        if (canGoBackward != that.canGoBackward) return false;
-        if (permissionsRequestCode != that.permissionsRequestCode) return false;
-        if (buttonCtaLabelRes != that.buttonCtaLabelRes) return false;
-        if (fragment != null ? !fragment.equals(that.fragment) : that.fragment != null)
+        if (id != that.id) {
             return false;
-        if (title != null ? !title.equals(that.title) : that.title != null) return false;
-        if (description != null ? !description.equals(that.description) : that.description != null)
+        }
+        if (titleRes != that.titleRes) {
             return false;
-        if (!Arrays.equals(permissions, that.permissions)) return false;
-        if (buttonCtaLabel != null ? !buttonCtaLabel.equals(that.buttonCtaLabel) : that.buttonCtaLabel != null)
+        }
+        if (descriptionRes != that.descriptionRes) {
             return false;
+        }
+        if (imageRes != that.imageRes) {
+            return false;
+        }
+        if (layoutRes != that.layoutRes) {
+            return false;
+        }
+        if (backgroundRes != that.backgroundRes) {
+            return false;
+        }
+        if (backgroundDarkRes != that.backgroundDarkRes) {
+            return false;
+        }
+        if (canGoForward != that.canGoForward) {
+            return false;
+        }
+        if (canGoBackward != that.canGoBackward) {
+            return false;
+        }
+        if (permissionsRequestCode != that.permissionsRequestCode) {
+            return false;
+        }
+        if (buttonCtaLabelRes != that.buttonCtaLabelRes) {
+            return false;
+        }
+        if (fragment != null ? !fragment.equals(that.fragment) : that.fragment != null) {
+            return false;
+        }
+        if (title != null ? !title.equals(that.title) : that.title != null) {
+            return false;
+        }
+        if (description != null ? !description.equals(that.description) : that.description != null) {
+            return false;
+        }
+        if (!Arrays.equals(permissions, that.permissions)) {
+            return false;
+        }
+        if (buttonCtaLabel != null ? !buttonCtaLabel.equals(that.buttonCtaLabel) : that.buttonCtaLabel != null) {
+            return false;
+        }
         return buttonCtaClickListener != null ? buttonCtaClickListener.equals(that.buttonCtaClickListener) : that.buttonCtaClickListener == null;
 
     }
@@ -409,8 +454,9 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         }
 
         public SimpleSlide build() {
-            if (backgroundRes == 0)
+            if (backgroundRes == 0) {
                 throw new IllegalArgumentException("You must set a background.");
+            }
             return new SimpleSlide(this);
         }
     }

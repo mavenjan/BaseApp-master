@@ -3,7 +3,7 @@ package com.cauc.mavenj.callback;
 import java.io.File;
 
 /**
- * Created by qiang_xi on 2016/10/9 21:05.
+ * @author qiang_xi on 2016/10/9 21:05.
  */
 
 public interface DownloadCallback {

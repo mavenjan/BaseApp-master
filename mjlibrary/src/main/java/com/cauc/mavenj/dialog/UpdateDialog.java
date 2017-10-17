@@ -30,40 +30,49 @@ import com.cauc.mavenj.utils.NetWorkUtils;
 import com.cauc.mavenj.R;
 
 /**
- * Created by qiang_xi on 2016/10/7 13:04.
+ * @author qiang_xi on 2016/10/7 13:04.
  * 非强制更新对话框
  */
 
 public class UpdateDialog extends Dialog {
     private Context context;
     private View view;
-    private TextView updateTitle;//标题
-    private TextView updateTime; //发布时间
-    private TextView updateVersion;//版本名
-    private TextView updateSize;//软件大小
-    private TextView updateDesc;//更新日志
-    private LinearLayout updateDescLayout;//更新日志根布局
-    private TextView updateNetworkState;//网络状况
-    private Button update;//开始更新
-    private Button noUpdate;//暂不更新
+    private TextView updateTitle;
+    private TextView updateTime;
+    private TextView updateVersion;
+    private TextView updateSize;
+    private TextView updateDesc;
+    private LinearLayout updateDescLayout;
+    private TextView updateNetworkState;
+    private Button update;
+    private Button noUpdate;
 
-    private String mDownloadUrl;//软件下载地址
-    private String mTitle;//标题
-    private String mAppTime;//发布时间
-    private String mVersionName;//版本名
-    private float mAppSize;//软件大小
-    private String mAppDesc;//更新日志
-    private String mAppName;//app名称
-    private String mFilePath;//文件存储路径
-    private String mFileName;//自定义的文件名
-    private int mIconResId;//通知栏图标id
-    private boolean isShowProgress = false;//是否在通知栏显示下载进度,默认不显示
-    private long timeRange;//时间间隔
+    private String mDownloadUrl;
+    private String mTitle;
+    private String mAppTime;
+    private String mVersionName;
+    private float mAppSize;
+    private String mAppDesc;
+    private String mAppName;
+    private String mFilePath;
+    private String mFileName;
+    private int mIconResId;
+    private boolean isShowProgress = false;
+    private long timeRange;
 
-    private Fragment mCompatFragmentCallback;//兼容v4版本fragment
-    private android.app.Fragment mFragmentCallback;//兼容3.0的fragment
+    /**
+     * 兼容v4版本fragment
+     */
+    private Fragment mCompatFragmentCallback;
+    /**
+     * 兼容3.0的fragment
+     */
+    private android.app.Fragment mFragmentCallback;
 
-    public static final int UPDATE_DIALOG_PERMISSION_REQUEST_CODE = 0;//权限请求码
+    /**
+     * 权限请求码
+     */
+    public static final int UPDATE_DIALOG_PERMISSION_REQUEST_CODE = 0;
 
     /**
      * 在activity中动态请求权限使用这个构造方法
@@ -95,15 +104,18 @@ public class UpdateDialog extends Dialog {
      * set dialog theme(设置对话框主题)
      */
     private void setDialogTheme() {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);// android:windowNoTitle
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);// android:backgroundDimEnabled默认是true的
-        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));// android:windowBackground
+        // android:windowNoTitle
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // android:backgroundDimEnabled默认是true的
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        // android:windowBackground
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        view = LayoutInflater.from(context).inflate(R.layout.checkupdatelibrary_update_dialog_layout, null);
+        view = LayoutInflater.from(context).inflate(R.layout.mj_checkupdatelibrary_update_dialog_layout, null);
         setContentView(view);
         initView();
         initData();
@@ -143,9 +155,10 @@ public class UpdateDialog extends Dialog {
         });
     }
 
+    private int  time = 1000;
     public void download() {
         //防抖动,两次点击间隔小于1s都return;
-        if (System.currentTimeMillis() - timeRange < 1000) {
+        if (System.currentTimeMillis() - timeRange < time) {
             return;
         }
         timeRange = System.currentTimeMillis();

@@ -29,6 +29,12 @@ import android.support.annotation.IntDef;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+/**
+ * @author Maven Jan
+ * @time
+ * @describe 描述
+ */
+
 public interface OnNavigationBlockedListener {
     @IntDef({DIRECTION_FORWARD, DIRECTION_BACKWARD})
     @Retention(RetentionPolicy.SOURCE)
@@ -39,5 +45,10 @@ public interface OnNavigationBlockedListener {
 
     int DIRECTION_BACKWARD = -1;
 
+    /**
+     * onNavigationBlocked
+     * @param position
+     * @param direction
+     */
     void onNavigationBlocked(int position, @Direction int direction);
 }

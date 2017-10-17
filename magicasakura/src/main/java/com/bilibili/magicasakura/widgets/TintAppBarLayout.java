@@ -47,14 +47,6 @@ public class TintAppBarLayout extends AppBarLayout implements Tintable, AppCompa
     }
 
     @Override
-    public void setBackgroundDrawable(Drawable background) {
-        super.setBackgroundDrawable(background);
-        if (mBackgroundHelper != null) {
-            mBackgroundHelper.setBackgroundDrawableExternal(background);
-        }
-    }
-
-    @Override
     public void setBackgroundResource(int resId) {
         if (mBackgroundHelper != null) {
             mBackgroundHelper.setBackgroundResId(resId);

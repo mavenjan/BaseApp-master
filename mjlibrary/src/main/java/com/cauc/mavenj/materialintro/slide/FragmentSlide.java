@@ -41,6 +41,11 @@ import android.view.ViewGroup;
 import com.cauc.mavenj.materialintro.app.ButtonCtaFragment;
 import com.cauc.mavenj.materialintro.app.SlideFragment;
 import com.cauc.mavenj.materialintro.view.parallax.ParallaxFragment;
+/**
+ * @author Maven Jan
+ * @time
+ * @describe 描述
+ */
 
 public class FragmentSlide implements Slide, RestorableSlide, ButtonCtaSlide {
 
@@ -129,20 +134,34 @@ public class FragmentSlide implements Slide, RestorableSlide, ButtonCtaSlide {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         FragmentSlide that = (FragmentSlide) o;
 
-        if (background != that.background) return false;
-        if (backgroundDark != that.backgroundDark) return false;
-        if (canGoForward != that.canGoForward) return false;
-        if (canGoBackward != that.canGoBackward) return false;
-        if (buttonCtaLabelRes != that.buttonCtaLabelRes) return false;
-        if (fragment != null ? !fragment.equals(that.fragment) : that.fragment != null)
+        if (background != that.background){ return false;}
+        if (backgroundDark != that.backgroundDark) {
             return false;
-        if (buttonCtaLabel != null ? !buttonCtaLabel.equals(that.buttonCtaLabel) : that.buttonCtaLabel != null)
+        }
+        if (canGoForward != that.canGoForward) {
             return false;
+        }
+        if (canGoBackward != that.canGoBackward) {
+            return false;
+        }
+        if (buttonCtaLabelRes != that.buttonCtaLabelRes) {
+            return false;
+        }
+        if (fragment != null ? !fragment.equals(that.fragment) : that.fragment != null) {
+            return false;
+        }
+        if (buttonCtaLabel != null ? !buttonCtaLabel.equals(that.buttonCtaLabel) : that.buttonCtaLabel != null) {
+            return false;
+        }
         return buttonCtaClickListener != null ? buttonCtaClickListener.equals(that.buttonCtaClickListener) : that.buttonCtaClickListener == null;
 
     }
@@ -237,8 +256,9 @@ public class FragmentSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         }
 
         public FragmentSlide build() {
-            if (background == 0 || fragment == null)
+            if (background == 0 || fragment == null) {
                 throw new IllegalArgumentException("You must set at least a fragment and background.");
+            }
             return new FragmentSlide(this);
         }
     }

@@ -34,7 +34,10 @@ import com.bilibili.magicasakura.utils.TintManager;
  * @author xyczero617@gmail.com
  * @time 15/11/15
  */
-public class AppCompatImageHelper extends AppCompatBaseHelper {
+public class AppCompatImageHelper extends BaseAppCompatHelper {
+    private int number2 = 2;
+    private int number3 = 3;
+
     public static final int[] ATTRS = {
             android.R.attr.src,
             R.attr.srcCompat,
@@ -58,9 +61,9 @@ public class AppCompatImageHelper extends AppCompatBaseHelper {
         if (image != null) {
             setImageDrawable(image);
         }
-        if (array.hasValue(2)) {
+        if (array.hasValue(number2)) {
             mImageTintResId = array.getResourceId(2, 0);
-            if (array.hasValue(3)) {
+            if (array.hasValue(number3)) {
                 setSupportImageTintMode(DrawableUtils.parseTintMode(array.getInt(3, 0), null));
             }
             setSupportImageTint(mImageTintResId);
@@ -79,7 +82,9 @@ public class AppCompatImageHelper extends AppCompatBaseHelper {
      * External use
      */
     public void setImageDrawable() {
-        if (skipNextApply()) return;
+        if (skipNextApply()) {
+            return;
+        }
 
         resetTintResource(0);
         setSkipNextApply(false);
@@ -112,7 +117,9 @@ public class AppCompatImageHelper extends AppCompatBaseHelper {
      * Internal use
      */
     private void setImageDrawable(Drawable drawable) {
-        if (skipNextApply()) return;
+        if (skipNextApply()) {
+            return;
+        }
 
         ((ImageView) mView).setImageDrawable(drawable);
     }
@@ -184,8 +191,19 @@ public class AppCompatImageHelper extends AppCompatBaseHelper {
     }
 
     public interface ImageExtensible {
+        /**
+         * 设置图片接口
+         *
+         * @param resId
+         */
         void setImageTintList(int resId);
 
+        /**
+         * 设置图片
+         *
+         * @param resId resource Id
+         * @param mode PorterDuff.Mode
+         */
         void setImageTintList(int resId, PorterDuff.Mode mode);
     }
 }
