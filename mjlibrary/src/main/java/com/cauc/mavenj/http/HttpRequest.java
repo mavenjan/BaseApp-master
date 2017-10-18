@@ -3,8 +3,11 @@ package com.cauc.mavenj.http;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
 
 import com.cauc.mavenj.callback.CheckUpdateCallback;
 import com.cauc.mavenj.callback.CheckUpdateCallback2;
@@ -24,13 +27,21 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author qiang_xi on 2016/10/9 20:36.
- * 网络请求类
+ *         网络请求类
  */
 
 public class HttpRequest {
+    private static final String TAG = "HttpRequest";
     private static final int HASE_UPDATE = 0;
     private static final int NO_UPDATE = 1;
     private static final int DOWNLOAD_SUCCESS = 2;
@@ -60,6 +71,32 @@ public class HttpRequest {
      */
     private static DownloadCallback downloadCallback;
     private static long timestamp;
+
+    static class MyThreadPool extends ThreadPoolExecutor {
+
+        public MyThreadPool(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
+            super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
+        }
+
+        @Override
+        protected void beforeExecute(Thread t, Runnable r) {
+            super.beforeExecute(t, r);
+            Log.e("google_lenve_fb", "beforeExecute: 开始执行任务！");
+        }
+
+        @Override
+        protected void afterExecute(Runnable r, Throwable t) {
+            super.afterExecute(r, t);
+            Log.e("google_lenve_fb", "beforeExecute: 任务执行结束！");
+        }
+
+        @Override
+        protected void terminated() {
+            super.terminated();
+            //当调用shutDown()或者shutDownNow()时会触发该方法
+            Log.e("google_lenve_fb", "terminated: 线程池关闭！");
+        }
+    }
 
     private static Handler handler = new Handler() {
         @Override
@@ -108,7 +145,6 @@ public class HttpRequest {
     private HttpRequest() {
     }
 
-
     /**
      * post请求检查更新,实体类中必须要有newAppVersionCode字段,不然检查不到更新
      *
@@ -120,10 +156,11 @@ public class HttpRequest {
     public static void post(final int currentVersionCode, @NonNull final String urlPath, final Map<String, String> params, @NonNull final CheckUpdateCallback callback) {
         updateCallback = callback;
         final Message message = new Message();
-        new Thread() {
+
+        final MyThreadPool myThreadPool = new MyThreadPool(3, 5, 1, TimeUnit.MINUTES, new LinkedBlockingDeque<Runnable>());
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                super.run();
                 BufferedReader bufferedReader = null;
                 InputStream inputStream = null;
                 HttpURLConnection httpURLConnection = null;
@@ -209,7 +246,8 @@ public class HttpRequest {
                     }
                 }
             }
-        }.start();
+        };
+        myThreadPool.execute(runnable);
     }
 
     /**
@@ -219,13 +257,14 @@ public class HttpRequest {
      * @param params   请求参数
      * @param callback 请求回调
      */
+
     public static void post(final String urlPath, final Map<String, String> params, CheckUpdateCallback2 callback) {
         updateCallback2 = callback;
         final Message message = new Message();
-        new Thread() {
+        final MyThreadPool myThreadPool = new MyThreadPool(3, 5, 1, TimeUnit.MINUTES, new LinkedBlockingDeque<Runnable>());
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                super.run();
                 BufferedReader bufferedReader = null;
                 InputStream inputStream = null;
                 HttpURLConnection httpURLConnection = null;
@@ -300,7 +339,8 @@ public class HttpRequest {
                     }
                 }
             }
-        }.start();
+        };
+        myThreadPool.execute(runnable);
     }
 
     /**
@@ -311,13 +351,14 @@ public class HttpRequest {
      * @param params             请求参数
      * @param callback           请求回调
      */
+
     public static void get(final int currentVersionCode, @NonNull final String urlPath, final Map<String, String> params, @NonNull final CheckUpdateCallback callback) {
         updateCallback = callback;
         final Message message = new Message();
-        new Thread() {
+        final MyThreadPool myThreadPool = new MyThreadPool(3, 5, 1, TimeUnit.MINUTES, new LinkedBlockingDeque<Runnable>());
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                super.run();
                 InputStream inputStream = null;
                 InputStreamReader inputStreamReader = null;
                 BufferedReader reader = null;
@@ -399,7 +440,8 @@ public class HttpRequest {
                     }
                 }
             }
-        }.start();
+        };
+        myThreadPool.execute(runnable);
     }
 
     /**
@@ -412,10 +454,11 @@ public class HttpRequest {
     public static void get(final String urlPath, final Map<String, String> params, CheckUpdateCallback2 callback) {
         updateCallback2 = callback;
         final Message message = new Message();
-        new Thread() {
+
+        final MyThreadPool myThreadPool = new MyThreadPool(3, 5, 1, TimeUnit.MINUTES, new LinkedBlockingDeque<Runnable>());
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                super.run();
                 InputStream inputStream = null;
                 InputStreamReader inputStreamReader = null;
                 BufferedReader reader = null;
@@ -486,7 +529,8 @@ public class HttpRequest {
                     }
                 }
             }
-        }.start();
+        };
+        myThreadPool.execute(runnable);
     }
 
     /**
@@ -499,10 +543,11 @@ public class HttpRequest {
      */
     public static void download(@NonNull final String downloadPath, @NonNull final String filePath, @NonNull final String fileName, @NonNull final DownloadCallback callback) {
         downloadCallback = callback;
-        new Thread() {
+
+        final MyThreadPool myThreadPool = new MyThreadPool(3, 5, 1, TimeUnit.MINUTES, new LinkedBlockingDeque<Runnable>());
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                super.run();
                 InputStream input = null;
                 OutputStream output = null;
                 HttpURLConnection connection = null;
@@ -581,7 +626,9 @@ public class HttpRequest {
                     }
                 }
             }
-        }.start();
+
+        };
+        myThreadPool.execute(runnable);
     }
 }
 
