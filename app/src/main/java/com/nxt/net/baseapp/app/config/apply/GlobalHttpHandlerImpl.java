@@ -56,7 +56,7 @@ public class GlobalHttpHandlerImpl implements GlobalHttpHandler {
                 JSONObject object = (JSONObject) array.get(0);
                 String login = object.getString("login");
                 String avatar_url = object.getString("avatar_url");
-                Timber.w("Result ------> " + login + "    ||   Avatar_url------> " + avatar_url);
+                Timber.w("Result ------> " + login + " ||   Avatar_url------> " + avatar_url);
             }
 
         } catch (JSONException e) {
