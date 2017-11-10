@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="com.android.support:support-fragment-25.3.1">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.android/build-cache/1055d8307bd376e83d8c523d811c3ecb2869335a/output/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.android/build-cache/1055d8307bd376e83d8c523d811c3ecb2869335a/output/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/support-fragment-25.3.1.aar/a0bec81de59bb94907f73d39704c4372/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/support-fragment-25.3.1.aar/a0bec81de59bb94907f73d39704c4372/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
