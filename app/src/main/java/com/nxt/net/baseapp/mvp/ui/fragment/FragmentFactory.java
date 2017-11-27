@@ -24,9 +24,10 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
- * Created by Maven on 2017/6/17.
+ *
+ * @author Maven
+ * @date 2017/6/17
  * Email: cyjiang_11@163.com
  * Description:
  */
@@ -53,7 +54,7 @@ public class FragmentFactory {
         BaseMjFragment newFragment = null;
         switch (key) {
             case C.fragment.LOGIN:
-//                newFragment = LoginFragment.newInstance();
+                newFragment = LoginFragment.newInstance();
                 break;
 //            case C.fragment.REGISTER:
 //                newFragment = RegisterFragment.newInstance();

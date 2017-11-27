@@ -26,6 +26,7 @@ import com.jess.arms.di.module.GlobalConfigModule;
 import com.jess.arms.http.RequestInterceptor;
 import com.jess.arms.integration.ConfigModule;
 import com.jess.arms.utils.ArmsUtils;
+import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.nxt.net.baseapp.BuildConfig;
 import com.nxt.net.baseapp.app.config.lifecycles.ActivityLifecycleCallbacksImpl;
 import com.nxt.net.baseapp.app.config.lifecycles.AppLifecyclesImpl;
@@ -58,6 +59,7 @@ public final class GlobalConfiguration implements ConfigModule {
         //Release 时,让框架不再打印 Http 请求和响应的信息
         if (!BuildConfig.LOG_DEBUG) {
             builder.printHttpLogLevel(RequestInterceptor.Level.NONE);
+
         }
         builder.baseurl(Api.APP_DOMAIN)
                 //强烈建议自己自定义图片加载逻辑,因为默认提供的 GlideImageLoaderStrategy 并不能满足复杂的需求

@@ -32,7 +32,7 @@ import static android.content.Context.ACTIVITY_SERVICE;
  * @author Maven Jan
  */
 
-public class CommonUtils {
+public class CommonUtil {
     private static Pattern MOBILE_PATTERN = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0-3,5-9])|(17[6,7]))\\d{8}$");
     private static Pattern NUMBER_PATTERN = Pattern.compile("[0-9]*");
 
